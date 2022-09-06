@@ -82,12 +82,44 @@
     />
     <meta name="theme-color" content="#ffffff" />
 
-    <!-- Main css and js -->
-    <link rel="stylesheet" href="src/css/main.css" />
+    <!-- Main scss and js -->
+    <link rel="stylesheet" href="src/scss/main.scss" />
     <script defer type="module" src="src/js/controller.js"></script>
     <title>Namkora Restaurant</title>
   </head>
-  <body>
-    <h1>Welcome to <span style="color: green">Namkora Restaurant</span></h1>
+  <body class="d-flex justify-content-center">
+    <div class="container m-5 p-0 bg-light">
+      <nav class="navbar bg-custom-color-bookmark">
+        <div class="container">
+          <div class="navbar-brand">
+            <img src="src/img/logo.png" alt="Namkora Restaurant Logo" style="height: 40px; width: 40px; border-radius: 50%;">
+            <a><span class="text-custom-color-nav-btn">Namkora Restaurant</span></a>
+          </div>
+          <form class="d-flex" role="search">
+            <input
+              class="form-control me-2"
+              type="search"
+              placeholder="Search"
+              aria-label="Search"
+            />
+            <button class="btn btn-outline-custom-color-nav-btn" type="submit">Search</button>
+          </form>
+          <div class="d-flex">
+            <button class="btn btn-outline-custom-color-nav-btn me-2" type="button" disabled>Create Recipe</button>
+            <button class="btn btn-outline-custom-color-nav-btn me-2" type="button">Bookmark</button>
+            <button class="btn btn-outline-custom-color-nav-btn me-2" type="button">Login</button>
+          </div>
+        </div>
+      </nav>
+      <main class="container" style="height: 85vh;">
+        <div class="row h-100">
+          <div class="col-4 bg-custom-color-search-results-bg">
+          </div>
+          <div class="col-8 bg-custom-color-recipe-view-bg">
+            <h2 class="m-5">Welcome to <span class="text-success">Namkora Restaurant</span><span class="text-custom-color-nav-btn">!</span></h1>
+          </div>
+        </div>
+      </div>
+    </div>
   </body>
 </html>
