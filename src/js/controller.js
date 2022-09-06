@@ -1,4 +1,4 @@
 "use strict";
 
-message = `Welcome to Namkora Restaurant!`;
+const message = `Welcome to Namkora Restaurant!`;
 console.log(message);
