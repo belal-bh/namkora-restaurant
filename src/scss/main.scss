@@ -5,8 +5,13 @@
 @import "./abstracts/variables";
 
 // Create your own map
+// Hex Codes: #854d27, #dd7230, #f4c95d, #e7e393, #04030f
 $custom-colors: (
-  "custom-color-nav-btn": rgb(235, 194, 82),
+  "cct-russet": $cct-russet,
+  "cct-dc-orange": $cct-dc-orange,
+  "cct-sdg-yellow": $cct-sdg-yellow,
+  "cct-light-khaki": $cct-light-khaki,
+  "cct-rich-black": $cct-rich-black,
   "custom-color-search-results-bg": rgba(234, 225, 222, 0.674),
   "custom-color-recipe-view-bg": rgb(239, 239, 239),
 );
@@ -14,6 +19,53 @@ $custom-colors: (
 @import "~bootstrap/scss/functions";
 @import "~bootstrap/scss/variables";
 @import "~bootstrap/scss/mixins";
+
+@mixin list-group-item-variant($state, $background, $color) {
+  .list-group-item-#{$state} {
+    color: $color;
+    background-color: $background;
+
+    &.list-group-item-action {
+      &:hover,
+      &:focus {
+        color: $color;
+        background-color: shade-color($background, 10%);
+      }
+
+      &.active {
+        color: $white;
+        background-color: $color;
+        border-color: $color;
+      }
+    }
+  }
+}
+
+// List group contextual variants
+//
+// Add modifier classes to change text and background color on individual items.
+// Organizationally, this must come after the `:hover` states.
+
+@each $state, $value in $theme-colors {
+  $list-group-variant-bg: shift-color($value, $list-group-item-bg-scale);
+  $list-group-variant-color: shift-color($value, $list-group-item-color-scale);
+  @if (
+    contrast-ratio($list-group-variant-bg, $list-group-variant-color) <
+      $min-contrast-ratio
+  ) {
+    $list-group-variant-color: mix(
+      $value,
+      color-contrast($list-group-variant-bg),
+      abs($list-group-item-color-scale)
+    );
+  }
+
+  @include list-group-item-variant(
+    $state,
+    $list-group-variant-bg,
+    $list-group-variant-color
+  );
+}
 
 // Merge the maps
 $theme-colors: map-merge($theme-colors, $custom-colors);

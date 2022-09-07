@@ -1,3 +1,6 @@
+# Docs and temp files during development
+docs
+
 # Logs
 logs
 *.log
