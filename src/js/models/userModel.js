@@ -23,13 +23,12 @@ User.prototype.getPasswordHash = function () {
 };
 
 User.prototype.normalizeUsername = function () {
-  this.usename = this.usename.trim();
+  this.usename = normalizeUsername(this.usename);
   return this;
 };
 
 User.prototype.resetPassword = function (rawPassword) {
   this._password = rawPassword ? encriptPassword(rawPassword) : "";
-  console.log(this);
   persistUsers();
 };
 
@@ -38,32 +37,42 @@ User.prototype.isCorrectPassword = function (rawPassword) {
 };
 
 User.prototype.save = function () {
-  model.state.users.push(this);
+  const user = getUser(this.usename);
+  if (!user) {
+    // new user
+    model.state.users.push(this);
+  } else {
+    // Same user. Early return
+    if (user === this) return this;
 
-  console.log(model.state.users);
+    user.usename = this.usename;
+    user._password = this.getPasswordHash();
+    user.userType = this.userType;
+  }
 
   // synce to local storage
   persistUsers();
-
-  console.log(model.state.users);
   return this;
 };
 
+const getUser = (usename) => {
+  usename = normalizeUsername(usename);
+  for (i = 0; i < model.state.users.length; i++) {
+    if (model.state.users[i].usename === usename) return model.state.users[i];
+  }
+  return false;
+};
+
 const isUsernameExist = (usename) => {
-  usename = _normalizeUsername(usename);
+  usename = normalizeUsername(usename);
   let found = false;
   for (i = 0; i < model.state.users.length && !found; i++) {
     if (model.state.users[i].usename === usename) return true;
   }
   return found;
-
-  //   return model.state.users.reduce(
-  //     (found, user) => found || user.usename === usename,
-  //     false
-  //   );
 };
 
-const _normalizeUsername = (usename) => {
+const normalizeUsername = (usename) => {
   return typeof usename === "string" ? usename.trim() : "";
 };
 
