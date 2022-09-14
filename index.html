@@ -124,14 +124,27 @@
               Search
             </button>
           </form>
-          <div class="d-flex">
-            <button class="btn btn-cct-russet me-2" type="button" disabled>
+          <div class="d-flex user-states">
+            <button
+              class="btn btn-cct-russet me-2 user-states--create-recipe-btn"
+              type="button"
+              disabled
+            >
               Create Recipe
             </button>
-            <button class="btn btn-cct-russet me-2" type="button">
-              Bookmark
+            <button
+              class="btn btn-cct-russet me-2 user-states--favorite-btn"
+              type="button"
+            >
+              Favorite
             </button>
-            <button class="btn btn-cct-russet me-2" type="button">Login</button>
+            <a
+              class="btn btn-cct-russet me-2 user-states--profile-status-btn"
+              data-bs-toggle="modal"
+              href="#loginModalToggle"
+              role="button"
+              >Login</a
+            >
           </div>
         </div>
       </nav>
@@ -262,50 +275,214 @@
             </div>
           </div>
           <div class="col-8 bg-custom-color-recipe-view-bg">
-            <div class="m-5 p-5 bg-light">
-              <form id="registration-form">
-                <div class="mb-3">
-                  <label for="username" class="form-label">Username</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="username"
-                    aria-describedby="usernameHelp"
-                    required
-                  />
-                  <div id="usernameHelp" class="form-text">
-                    Choose an uniqe username.
+            <div class="">
+              <!-- Login Modal -->
+              <div
+                class="modal fade"
+                id="loginModalToggle"
+                aria-hidden="true"
+                aria-labelledby="loginModalToggleLabel"
+                tabindex="-1"
+              >
+                <div class="modal-dialog modal-dialog-centered">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="loginModalToggleLabel">
+                        Login Your Namkora Account!
+                      </h5>
+                      <button
+                        type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"
+                      ></button>
+                    </div>
+                    <div class="modal-body">
+                      <form class="login">
+                        <div class="text-danger validation-error-message"></div>
+                        <div class="mb-3">
+                          <label for="login--username" class="form-label"
+                            >Username</label
+                          >
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="login--username"
+                            aria-describedby="login--usernameHelp"
+                            required
+                            name="username"
+                          />
+                          <div id="login--usernameHelp" class="form-text">
+                            Enter your uniqe username.
+                          </div>
+                        </div>
+                        <div class="mb-3">
+                          <label for="login--rawPassword" class="form-label"
+                            >Password</label
+                          >
+                          <input
+                            type="password"
+                            class="form-control"
+                            id="login--rawPassword"
+                            required
+                            name="rawPassword"
+                          />
+                        </div>
+                        <button type="submit" class="btn btn-cct-russet">
+                          Login
+                        </button>
+                      </form>
+                    </div>
+                    <div class="modal-footer">
+                      <p>Do not have a Namkora Account ?</p>
+                      <button
+                        class="btn btn-primary"
+                        data-bs-target="#registrationModalToggle"
+                        data-bs-toggle="modal"
+                      >
+                        Register Here!
+                      </button>
+                    </div>
                   </div>
                 </div>
-                <div class="mb-3">
-                  <label for="rawPassword" class="form-label">Password</label>
-                  <input
-                    type="password"
-                    class="form-control"
-                    id="rawPassword"
-                    required
-                  />
+              </div>
+              <!-- Registration Modal -->
+              <div
+                class="modal fade"
+                id="registrationModalToggle"
+                aria-hidden="true"
+                aria-labelledby="registrationModalToggleLabel"
+                tabindex="-1"
+              >
+                <div class="modal-dialog modal-dialog-centered">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="registrationModalToggleLabel">
+                        Register Your Namkora Account!
+                      </h5>
+                      <button
+                        type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"
+                      ></button>
+                    </div>
+                    <div class="modal-body">
+                      <form class="registration">
+                        <div class="text-danger validation-error-message"></div>
+                        <div class="mb-3">
+                          <label for="registration--username" class="form-label"
+                            >Username</label
+                          >
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="registration--username"
+                            aria-describedby="registration--usernameHelp"
+                            required
+                            name="username"
+                          />
+                          <div
+                            id="registration--usernameHelp"
+                            class="form-text"
+                          >
+                            Choose an uniqe username.
+                          </div>
+                        </div>
+                        <div class="mb-3">
+                          <label
+                            for="registration--rawPassword"
+                            class="form-label"
+                            >Password</label
+                          >
+                          <input
+                            type="password"
+                            class="form-control"
+                            id="registration--rawPassword"
+                            required
+                            name="rawPassword"
+                          />
+                        </div>
+                        <div class="mb-3 form-check">
+                          <input
+                            type="checkbox"
+                            class="form-check-input"
+                            id="registration--isAdmin"
+                            name="isAdmin"
+                          />
+                          <label
+                            class="form-check-label"
+                            for="registration--isAdmin"
+                            >Request for
+                            <span class="text-cct-russet">ADMIN</span>
+                            Account.</label
+                          >
+                        </div>
+                        <button type="submit" class="btn btn-cct-russet">
+                          Register
+                        </button>
+                      </form>
+                    </div>
+                    <div class="modal-footer">
+                      <p>Already have a Namkora Account ?</p>
+                      <button
+                        class="btn btn-primary"
+                        data-bs-target="#loginModalToggle"
+                        data-bs-toggle="modal"
+                      >
+                        Login Here!
+                      </button>
+                    </div>
+                  </div>
                 </div>
-                <div class="mb-3 form-check">
-                  <input
-                    type="checkbox"
-                    class="form-check-input"
-                    id="isAdmin"
-                  />
-                  <label class="form-check-label" for="isAdmin"
-                    >Request for
-                    <span class="text-cct-russet">ADMIN</span>
-                    Account.</label
-                  >
+              </div>
+              <!-- Logout Modal -->
+              <div
+                class="modal fade"
+                id="logoutModalToggle"
+                aria-hidden="true"
+                aria-labelledby="logoutModalToggleLabel"
+                tabindex="-1"
+              >
+                <div class="modal-dialog modal-dialog-centered">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="logoutModalToggleLabel">
+                        You are about to loged out!
+                      </h5>
+                      <button
+                        type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"
+                      ></button>
+                    </div>
+                    <div class="modal-body">
+                      <form class="logout">
+                        <div class="text-danger validation-error-message"></div>
+                        <p class="text-cct-russet">
+                          <i class="bi bi-exclamation-triangle me-2"></i> Are
+                          you sure to logout!
+                        </p>
+                        <button type="submit" class="btn btn-cct-russet">
+                          Logout
+                        </button>
+                      </form>
+                    </div>
+                    <div class="modal-footer">
+                      <button
+                        type="button"
+                        class="btn btn-primary"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  </div>
                 </div>
-                <button type="submit" class="btn btn-cct-russet">
-                  Register
-                </button>
-              </form>
+              </div>
             </div>
-            <!-- <div class="m-5 p-5">
-              <h2 class="m-5">Welcome to <span class="text-cct-russet">Namkora Restaurant</span><span class="text-cct-russet">!</span></h1>
-            </div> -->
           </div>
         </div>
       </main>
