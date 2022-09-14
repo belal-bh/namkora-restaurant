@@ -1,5 +1,5 @@
 export default userTypes = {
-    ADMIN: 'admin',
-    CUSTOMER: 'customer',
-    ANONYMOUS: 'anonymous',
-}
+  ADMIN: "admin",
+  CUSTOMER: "customer",
+  ANONYMOUS: "anonymous",
+};
