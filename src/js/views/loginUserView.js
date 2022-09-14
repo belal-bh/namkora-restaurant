@@ -1,4 +1,3 @@
-"use strict";
 import View from "./View.js";
 import * as bootstrap from "bootstrap";
 

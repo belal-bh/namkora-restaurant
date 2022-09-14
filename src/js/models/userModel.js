@@ -1,4 +1,3 @@
-"use strict";
 import { SPINNER_WAIT_SEC } from "./../config";
 import { UsersStorageKey } from "./storageKeys";
 import userTypes from "./userTypes";

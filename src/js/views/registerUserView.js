@@ -1,4 +1,3 @@
-"use strict";
 import userTypes from "../models/userTypes.js";
 import View from "./View.js";
 import * as bootstrap from "bootstrap";
