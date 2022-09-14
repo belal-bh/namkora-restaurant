@@ -1,0 +1,30 @@
+{
+  "name": "namkora-restaurant",
+  "version": "1.0.0",
+  "description": "A restaurant web application using vanilla JavaScript.",
+  "default": "index.html",
+  "scripts": {
+    "start": "parcel index.html",
+    "build": "parcel build index.html --dist-dir ./dist"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/belal-bh/namkora-restaurant.git"
+  },
+  "author": "Md. Belal Hossain",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/belal-bh/namkora-restaurant/issues"
+  },
+  "homepage": "https://github.com/belal-bh/namkora-restaurant#readme",
+  "devDependencies": {
+    "@parcel/packager-raw-url": "^2.7.0",
+    "@parcel/transformer-sass": "^2.7.0",
+    "@parcel/transformer-webmanifest": "^2.7.0",
+    "parcel": "^2.7.0"
+  },
+  "dependencies": {
+    "bootstrap": "^5.2.0",
+    "bootstrap-icons": "^1.9.1"
+  }
+}

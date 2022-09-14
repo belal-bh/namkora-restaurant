@@ -1,0 +1,28 @@
+$body-bg: rgb(239, 239, 239);
+
+/* 
+* Color themes Hex Codes: 
+* russet: #854d27,  
+* deep-carrot-orange (dc-orange): #dd7230, 
+* stil-de-grain-yellow (sdg-yellow): #f4c95d, 
+* light-khaki: #e7e393, 
+* rich-black: #04030f
+*/
+$cct-dc-orange: #dd7230;
+$cct-sdg-yellow: #f4c95d;
+$cct-russet: #854d27;
+$cct-light-khaki: #e7e393;
+$cct-rich-black: #04030f;
+
+$cct-light-gray: rgb(239, 239, 239);
+
+// $list-group-hover-bg:               $gray-100;
+$list-group-active-color: $cct-rich-black;
+$list-group-active-bg: $cct-light-gray;
+$list-group-active-border-color: #ffffff;
+
+$list-group-action-color: $cct-rich-black;
+$list-group-action-hover-color: $list-group-action-color;
+
+// $list-group-action-active-color: $cct-light-khaki;
+// $list-group-action-active-bg: $cct-light-khaki;
