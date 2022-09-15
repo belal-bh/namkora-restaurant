@@ -1,5 +1,3 @@
-export default userTypes = {
-  ADMIN: "admin",
-  CUSTOMER: "customer",
-  ANONYMOUS: "anonymous",
-};
+export const ADMIN = "admin";
+export const CUSTOMER = "customer";
+export const ANONYMOUS = "anonymous";

@@ -3,23 +3,22 @@ import { async } from "regenerator-runtime";
 import "regenerator-runtime/runtime"; // Polyfiling others
 
 import { SPINNER_WAIT_SEC } from "./../config";
-import { UsersStorageKey } from "./storageKeys";
-import userTypes from "./userTypes";
-import { wait } from "./../helpers";
+import { usersStorageKey, loggedInUserCookieKey } from "./storageKeys";
+import { ADMIN, CUSTOMER, ANONYMOUS } from "./userTypes";
+import { deleteCookie, setCookie, wait } from "./../helpers";
 import * as model from "./model";
 import { ValidationError } from "./exceptions";
 
 export class User {
   username = "";
   _password = "";
-  userType = userTypes.ANONYMOUS;
+  userType = ANONYMOUS;
 
-  constructor(username = "", rawPassword = "", userType = userTypes.ANONYMOUS) {
+  constructor(username = "", rawPassword = "", userType = ANONYMOUS) {
     this.username = username;
     this._password = rawPassword ? encriptPassword(rawPassword) : "";
-    if (userType === userTypes.CUSTOMER || userType === userTypes.ADMIN)
-      this.userType = userType;
-    else this.userType = userTypes.ANONYMOUS;
+    if (userType === CUSTOMER || userType === ADMIN) this.userType = userType;
+    else this.userType = ANONYMOUS;
   }
 }
 
@@ -60,7 +59,7 @@ User.prototype.save = function () {
   return this;
 };
 
-const getUser = (username) => {
+export const getUser = (username) => {
   username = normalizeUsername(username);
   for (i = 0; i < model.state.users.length; i++) {
     if (model.state.users[i].username === username) return model.state.users[i];
@@ -105,13 +104,12 @@ const _decriptPassword = (encriptedPassword) => {
 };
 
 const persistUsers = () => {
-  localStorage.setItem(UsersStorageKey, JSON.stringify(model.state.users));
+  localStorage.setItem(usersStorageKey, JSON.stringify(model.state.users));
 };
 
 const isValidUserType = (userType) => {
-  if (!userType || userType === userTypes.ANONYMOUS) return false;
-  if (!(userType === userTypes.CUSTOMER || userType === userTypes.ADMIN))
-    return false;
+  if (!userType || userType === ANONYMOUS) return false;
+  if (!(userType === CUSTOMER || userType === ADMIN)) return false;
   return true;
 };
 
@@ -161,10 +159,7 @@ export const createUser = async function (newUser) {
       newUser.userType
     );
     user.normalizeUsername().resetPassword(newUser.rawPassword);
-    user.userType =
-      newUser.userType === userTypes.ADMIN
-        ? userTypes.ADMIN
-        : userTypes.CUSTOMER;
+    user.userType = newUser.userType === ADMIN ? ADMIN : CUSTOMER;
 
     const savedUser = user.save();
 
@@ -186,6 +181,7 @@ export const loginUser = async function (newUser) {
       throw new ValidationError(`Invalid credential!`);
 
     model.state.loggedInUser = user;
+    setCookie(loggedInUserCookieKey, user.username);
 
     await wait(SPINNER_WAIT_SEC);
 
@@ -200,6 +196,7 @@ export const logoutUser = async function () {
     if (!model.state.loggedInUser.username) return;
 
     model.state.loggedInUser = new User();
+    deleteCookie(loggedInUserCookieKey);
 
     await wait(SPINNER_WAIT_SEC);
 

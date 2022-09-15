@@ -4,10 +4,23 @@ import "regenerator-runtime/runtime"; // Polyfiling others
 
 // Import all of Bootstrap's JS
 import * as bootstrap from "bootstrap";
+// import {
+//   // Alert,
+//   Button,
+//   Carousel,
+//   Collapse,
+//   Dropdown,
+//   Modal,
+//   Offcanvas,
+//   Popover,
+//   ScrollSpy,
+//   Tab,
+//   Toast,
+//   Tooltip,
+// } from "bootstrap";
 
 import * as model from "./models/model";
 import * as userModel from "./models/userModel";
-import userTypes from "./models/userTypes";
 import registerUserView from "./views/registerUserView";
 import loginUserView from "./views/loginUserView";
 import logoutUserView from "./views/logoutUserView";
@@ -15,6 +28,7 @@ import userStateView from "./views/userStateView";
 import { ValidationError } from "./models/exceptions";
 import { wait } from "./helpers";
 import { MODAL_MESSAGE_WAIT_SEC } from "./config";
+import { ADMIN, CUSTOMER, ANONYMOUS } from "./models/userTypes";
 
 const controlRegisterUser = async function (newUser) {
   try {
