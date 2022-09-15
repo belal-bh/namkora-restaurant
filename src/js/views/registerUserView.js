@@ -1,4 +1,4 @@
-import userTypes from "../models/userTypes.js";
+import { ADMIN, CUSTOMER, ANONYMOUS } from "../models/userTypes.js";
 import View from "./View.js";
 import * as bootstrap from "bootstrap";
 
@@ -38,7 +38,7 @@ class RegisterUserView extends View {
       const newUserData = {
         username: data.username,
         rawPassword: data.rawPassword,
-        userType: data.isAdmin === "on" ? userTypes.ADMIN : userTypes.CUSTOMER,
+        userType: data.isAdmin === "on" ? ADMIN : CUSTOMER,
       };
       handler(newUserData);
     });

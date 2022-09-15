@@ -1,4 +1,4 @@
-import userTypes from "../models/userTypes.js";
+import { ADMIN, CUSTOMER, ANONYMOUS } from "../models/userTypes.js";
 import View from "./View.js";
 import { state } from "../models/model.js";
 
@@ -27,7 +27,7 @@ class UserStateView extends View {
   _generateMarkup() {
     const markup = `
         <button class="btn btn-cct-russet me-2  user-states--create-recipe-btn" type="button" ${
-          state.loggedInUser.userType !== userTypes.ADMIN ? "disabled" : ""
+          state.loggedInUser.userType !== ADMIN ? "disabled" : ""
         } >
             Create Recipe
         </button>
