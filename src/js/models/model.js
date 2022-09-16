@@ -1,7 +1,15 @@
 import * as userModel from "./userModel";
-import { usersStorageKey, loggedInUserCookieKey } from "./storageKeys";
+import * as recipeModel from "./recipeModel";
+import {
+  usersStorageKey,
+  loggedInUserCookieKey,
+  recipesStorageKey,
+} from "./storageKeys";
 import { getCookie } from "../helpers";
+import addRecipeView from "../views/addRecipeView";
 export const state = {
+  recipe: {},
+  recipes: [],
   users: [],
   loggedInUser: new userModel.User(),
 };
@@ -18,12 +26,17 @@ const restoreLoginSession = function (cookieKey) {
 };
 
 const init = function () {
-  const storage = localStorage.getItem(usersStorageKey);
-  state.users = userModel.parseUsersFromJSON(storage);
+  const usersStorage = localStorage.getItem(usersStorageKey);
+  state.users = userModel.parseUsersFromJSON(usersStorage);
+
+  const recipesStorage = localStorage.getItem(recipesStorageKey);
+  state.recipes = recipeModel.parseRecipesFromJSON(recipesStorage);
+
   restoreLoginSession(loggedInUserCookieKey);
 
   // for clean up storage
   // localStorage.removeItem(usersStorageKey);
+  // localStorage.removeItem(recipesStorageKey);
 };
 
 init();
