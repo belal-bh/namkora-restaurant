@@ -61,7 +61,7 @@ User.prototype.save = function () {
 
 export const getUser = (username) => {
   username = normalizeUsername(username);
-  for (i = 0; i < model.state.users.length; i++) {
+  for (let i = 0; i < model.state.users.length; i++) {
     if (model.state.users[i].username === username) return model.state.users[i];
   }
   return false;
@@ -70,7 +70,7 @@ export const getUser = (username) => {
 const isUsernameExist = (username) => {
   username = normalizeUsername(username);
   let found = false;
-  for (i = 0; i < model.state.users.length && !found; i++) {
+  for (let i = 0; i < model.state.users.length && !found; i++) {
     if (model.state.users[i].username === username) return true;
   }
   return found;
