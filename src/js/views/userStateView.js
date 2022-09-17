@@ -26,15 +26,18 @@ class UserStateView extends View {
 
   _generateMarkup() {
     const markup = `
-        <a
-          class="btn btn-cct-russet me-2 user-states--create-recipe-btn"
-          data-bs-toggle="modal"
-          href="#addRecipeModalToggle"
-          role="button"
-          ${state.loggedInUser.userType !== ADMIN ? "disabled" : ""}
-        >
-          Create Recipe
-        </a>
+        ${
+          state.loggedInUser.userType === ADMIN
+            ? `<a
+                  class="btn btn-cct-russet me-2 user-states--create-recipe-btn"
+                  data-bs-toggle="modal"
+                  href="#addRecipeModalToggle"
+                  role="button"
+                >
+                  Create Recipe
+                </a>`
+            : ""
+        }
         <button class="btn btn-cct-russet me-2 user-states--favorite-btn" type="button">
             Favorite
         </button>
