@@ -32,6 +32,33 @@ import { ValidationError } from "./models/exceptions";
 import { wait } from "./helpers";
 import { MODAL_MESSAGE_WAIT_SEC } from "./config";
 import { ADMIN, CUSTOMER, ANONYMOUS } from "./models/userTypes";
+import recipeView from "./views/recipeView";
+import * as recipeModel from './models/recipeModel'
+
+
+const controlRecipes = async function () {
+  try {
+    const id = window.location.hash.slice(1);
+
+    if (!id) return;
+    recipeView.renderSpinner();
+
+    // 0) update results view to mark selected search result
+    // resultsView.update(model.getSearchResultsPage());
+
+    // 1) updating bookmarks view
+    // bookmarksView.update(model.state.bookmarks);
+
+    // 2) Loading recipe
+    await recipeModel.loadRecipe(id);
+
+    // 3) Rendering recipe
+    recipeView.render(model.state.recipe);
+  } catch (err) {
+    recipeView.renderError();
+  }
+};
+
 
 const controlRegisterUser = async function (newUser) {
   try {
@@ -228,6 +255,7 @@ const init = () => {
   loginUserView.addHandlerLoginUser(controlLoginUser);
   logoutUserView.addHandlerLogoutUser(controlLogoutUser);
   addRecipeView.addHandlerUpload(controlAddRecipe);
+  recipeView.addHandlerRender(controlRecipes);
 };
 
 init();
