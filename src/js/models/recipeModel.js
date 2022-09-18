@@ -66,6 +66,11 @@ export const getRecipe = (id) => {
   return false;
 };
 
+export const searchRecipeByTitle = async function(query){
+  // TODO: Implement search algorithm
+  return state.recipes;
+   
+}
 
 const createRecipeObject = function (recipe) {
   const recipeData = {...recipe};
