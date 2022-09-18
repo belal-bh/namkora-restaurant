@@ -4,20 +4,6 @@ import "regenerator-runtime/runtime"; // Polyfiling others
 
 // Import all of Bootstrap's JS
 import * as bootstrap from "bootstrap";
-// import {
-//   // Alert,
-//   Button,
-//   Carousel,
-//   Collapse,
-//   Dropdown,
-//   Modal,
-//   Offcanvas,
-//   Popover,
-//   ScrollSpy,
-//   Tab,
-//   Toast,
-//   Tooltip,
-// } from "bootstrap";
 
 import { v4 as uuidv4 } from "uuid";
 import * as model from "./models/model";
@@ -28,13 +14,14 @@ import loginUserView from "./views/loginUserView";
 import logoutUserView from "./views/logoutUserView";
 import userStateView from "./views/userStateView";
 import addRecipeView from "./views/addRecipeView";
+import resultsView from "./views/resultsView";
 import { ValidationError } from "./models/exceptions";
 import { wait } from "./helpers";
 import { MODAL_MESSAGE_WAIT_SEC } from "./config";
 import { ADMIN, CUSTOMER, ANONYMOUS } from "./models/userTypes";
 import recipeView from "./views/recipeView";
-import * as recipeModel from './models/recipeModel'
-
+import * as recipeModel from "./models/recipeModel";
+import searchView from "./views/searchView";
 
 const controlRecipes = async function () {
   try {
@@ -59,6 +46,27 @@ const controlRecipes = async function () {
   }
 };
 
+const controlSearchResults = async function () {
+  try {
+    resultsView.renderSpinner();
+
+    // 1) Get search query
+    const query = searchView.getQuery();
+    if (!query) return;
+    console.log(query);
+
+    // 2) Load search results
+    await model.loadSearchResults(query);
+
+    // 3) Render results
+    resultsView.render(model.getSearchResultsPage());
+
+    // 4) Render pagination buttons
+    // paginationView.render(model.state.search);
+  } catch (err) {
+    // console.error(`${err} 💥💥💥`);
+  }
+};
 
 const controlRegisterUser = async function (newUser) {
   try {
@@ -256,6 +264,7 @@ const init = () => {
   logoutUserView.addHandlerLogoutUser(controlLogoutUser);
   addRecipeView.addHandlerUpload(controlAddRecipe);
   recipeView.addHandlerRender(controlRecipes);
+  searchView.addHandlerSearch(controlSearchResults);
 };
 
 init();
