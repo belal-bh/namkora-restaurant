@@ -12,8 +12,9 @@ $custom-colors: (
   "cct-sdg-yellow": $cct-sdg-yellow,
   "cct-light-khaki": $cct-light-khaki,
   "cct-rich-black": $cct-rich-black,
-  "custom-color-search-results-bg": rgba(234, 225, 222, 0.674),
-  "custom-color-recipe-view-bg": rgb(239, 239, 239),
+  "cct-gray": #F2EFEE,
+  "cct-light": #F9F5F3,
+  "cct-white": white,
 );
 
 @import "~bootstrap/scss/functions";

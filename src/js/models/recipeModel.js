@@ -1,6 +1,8 @@
 import { v4 as uuidv4 } from "uuid";
 import { state } from "./model";
 import { recipesStorageKey } from "./storageKeys";
+import {SPINNER_WAIT_SEC} from './../config'
+import { wait } from "../helpers";
 
 export class Recipe {
   id;
@@ -32,21 +34,56 @@ export class Recipe {
   }
 }
 
+
+Recipe.prototype.save = function () {
+  const recipe = getRecipe(this.id);
+  if (!recipe) {
+    // new recipe
+    state.recipes.push(this);
+  } else {
+    // Same recipe. Early return
+    if (recipe === this) return this;
+
+    // update recipe and save
+    recipe.title = this.title;
+    recipe.publisher = this.publisher;
+    recipe.sourceUrl = this.sourceUrl;
+    recipe.image = this.image;
+    recipe.servings = this.servings;
+    recipe.cookingTime = this.cookingTime;
+    recipe.ingredients = this.ingredients;
+  }
+
+  // synce to local storage
+  persistRecipes();
+  return this;
+};
+
+export const getRecipe = (id) => {
+  for (let i = 0; i < state.recipes.length; i++) {
+    if (state.recipes[i].id === id) return state.recipes[i];
+  }
+  return false;
+};
+
+
 const createRecipeObject = function (recipe) {
-  const recipeData = {
-    id: recipe.id,
-    user: recipe.user,
-    createdAt: recipe.created_at,
-    title: recipe.title,
-    publisher: recipe.publisher,
-    sourceUrl: recipe.source_url,
-    image: recipe.image_url,
-    servings: recipe.servings,
-    cookingTime: recipe.cooking_time,
-    ingredients: recipe.ingredients,
-  };
-  console.log(recipeData);
+  const recipeData = {...recipe};
+  // console.log(recipeData);
   return new Recipe(recipeData);
+};
+
+export const loadRecipe = async function (id) {
+  try {
+    const recipe = getRecipe(id);
+    state.recipe = recipe;
+
+    // if (state.bookmarks.some(bookmark => bookmark.id === id))
+    //   state.recipe.bookmarked = true;
+    // else state.recipe.bookmarked = false;
+  } catch (err) {
+    throw err;
+  }
 };
 
 export const uploadRecipe = async function (newRecipe) {
@@ -62,27 +99,30 @@ export const uploadRecipe = async function (newRecipe) {
     });
     const today = new Date();
 
-    const recipe = {
+    const recipeData = {
       id: uuidv4(),
       user: state.loggedInUser.username ? state.loggedInUser.username : null,
-      created_at: today.toISOString(),
+      createdAt: today.toISOString(),
       title: newRecipe.title,
-      source_url: newRecipe.sourceUrl,
-      image_url: newRecipe.image,
+      sourceUrl: newRecipe.sourceUrl,
+      image: newRecipe.image,
       publisher: newRecipe.publisher,
-      cooking_time: +newRecipe.cookingTime,
+      cookingTime: +newRecipe.cookingTime,
       servings: +newRecipe.servings,
       ingredients,
     };
 
-    console.log("recipe", recipe);
-    const recipeCreated = createRecipeObject(recipe);
+    console.log("recipe", recipeData);
+    const recipe = createRecipeObject(recipeData);
 
-    console.log("recipeCreated", recipeCreated);
+    console.log("recipe", recipe);
 
     // update recipe states
-    state.recipe = recipeCreated;
-    state.recipes.push(recipeCreated);
+    state.recipe = recipe;
+
+    const savedRecipe = recipe.save()
+
+    await wait(SPINNER_WAIT_SEC);
 
     persistRecipes();
   } catch (err) {
