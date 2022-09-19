@@ -32,7 +32,7 @@ class PreviewView extends View {
             </div>
           </div>
           <div class="justify-content-end">
-            <i class="fs-4 bi bi-person text-cct-dc-orange${
+            <i class="fs-4 bi bi-person text-cct-dc-orange ${
               this._data.user === state.loggedInUser.username ? "" : "d-none"
             }"></i>
           </div>
