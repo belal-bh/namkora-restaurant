@@ -20,6 +20,7 @@ import { wait } from "./helpers";
 import { MODAL_MESSAGE_WAIT_SEC } from "./config";
 import { ADMIN, CUSTOMER, ANONYMOUS } from "./models/userTypes";
 import recipeView from "./views/recipeView";
+import paginationView from "./views/paginationView";
 import * as recipeModel from "./models/recipeModel";
 import searchView from "./views/searchView";
 
@@ -62,10 +63,18 @@ const controlSearchResults = async function () {
     resultsView.render(model.getSearchResultsPage());
 
     // 4) Render pagination buttons
-    // paginationView.render(model.state.search);
+    paginationView.render(model.state.search);
   } catch (err) {
     // console.error(`${err} 💥💥💥`);
   }
+};
+
+const controlPagination = function (goToPage) {
+  // 1) Render new results
+  resultsView.render(model.getSearchResultsPage(goToPage));
+
+  // 2) Render new pagination buttons
+  paginationView.render(model.state.search);
 };
 
 const controlRegisterUser = async function (newUser) {
@@ -265,6 +274,7 @@ const init = () => {
   addRecipeView.addHandlerUpload(controlAddRecipe);
   recipeView.addHandlerRender(controlRecipes);
   searchView.addHandlerSearch(controlSearchResults);
+  paginationView.addHandlerClick(controlPagination);
 };
 
 init();
