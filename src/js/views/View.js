@@ -1,4 +1,3 @@
-import icons from "url:../../img/icons.svg";
 import "bootstrap-icons/font/bootstrap-icons.css";
 
 export default class View {
@@ -75,10 +74,8 @@ export default class View {
   renderError(message = this._errorMessage) {
     const markup = `
 			<div class="error">
-				<div>
-					<svg>
-					<use href="${icons}#icon-alert-triangle"></use>
-					</svg>
+				<div class="d-flex justify-content-center">
+          <i class="bi bi-exclamation-triangle text-cct-russet fs-1"></i>
 				</div>
 				<p>${message}</p>
 			</div>
@@ -90,9 +87,10 @@ export default class View {
   renderMessage(message = this._message) {
     const markup = `
       <div class="message text-align-center">
-        <div>
-          <p class="text-center text-cct-russet"><span class="me-2"><i class="bi bi-check2-circle"></i></span>${message}</p>
+        <div class="d-flex justify-content-center">
+          <i class="bi bi-check2-circle text-cct-russet fs-1"></i>
         </div>
+        <p class="text-center text-cct-russet">${message}</p>
       </div>
     `;
     this._clear();

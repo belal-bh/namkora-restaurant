@@ -21,6 +21,7 @@ import { MODAL_MESSAGE_WAIT_SEC } from "./config";
 import { ADMIN, CUSTOMER, ANONYMOUS } from "./models/userTypes";
 import recipeView from "./views/recipeView";
 import paginationView from "./views/paginationView";
+import bookmarksView from "./views/bookmarksView";
 import * as recipeModel from "./models/recipeModel";
 import searchView from "./views/searchView";
 
@@ -32,10 +33,10 @@ const controlRecipes = async function () {
     recipeView.renderSpinner();
 
     // 0) update results view to mark selected search result
-    // resultsView.update(model.getSearchResultsPage());
+    resultsView.update(model.getSearchResultsPage());
 
     // 1) updating bookmarks view
-    // bookmarksView.update(model.state.bookmarks);
+    bookmarksView.update(model.state.bookmarks);
 
     // 2) Loading recipe
     await recipeModel.loadRecipe(id);
@@ -75,6 +76,22 @@ const controlPagination = function (goToPage) {
 
   // 2) Render new pagination buttons
   paginationView.render(model.state.search);
+};
+
+const controlAddBookmark = function () {
+  // 1) Add/remove bookmark
+  if (!model.state.recipe.bookmarked) model.addBookmark(model.state.recipe);
+  else model.deleteBookmark(model.state.recipe.id);
+
+  // 2) Update recipe view
+  recipeView.update(model.state.recipe);
+
+  // 3) Render bookmarks
+  bookmarksView.render(model.state.bookmarks);
+};
+
+const controlBookmarks = function () {
+  bookmarksView.render(model.state.bookmarks);
 };
 
 const controlRegisterUser = async function (newUser) {
@@ -275,6 +292,8 @@ const init = () => {
   recipeView.addHandlerRender(controlRecipes);
   searchView.addHandlerSearch(controlSearchResults);
   paginationView.addHandlerClick(controlPagination);
+  bookmarksView.addHandlerRender(controlBookmarks);
+  recipeView.addHandlerAddBookmark(controlAddBookmark);
 };
 
 init();

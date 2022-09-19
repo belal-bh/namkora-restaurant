@@ -38,9 +38,6 @@ class UserStateView extends View {
                 </a>`
             : ""
         }
-        <button class="btn btn-cct-russet me-2 user-states--favorite-btn text-uppercase" type="button">
-            Favorite
-        </button>
         ${
           state.loggedInUser.username
             ? `
