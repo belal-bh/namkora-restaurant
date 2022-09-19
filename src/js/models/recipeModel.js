@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from "uuid";
 import { state } from "./model";
 import { recipesStorageKey } from "./storageKeys";
-import {SPINNER_WAIT_SEC} from './../config'
+import { SPINNER_WAIT_SEC } from "./../config";
 import { wait } from "../helpers";
 
 export class Recipe {
@@ -34,7 +34,6 @@ export class Recipe {
   }
 }
 
-
 Recipe.prototype.save = function () {
   const recipe = getRecipe(this.id);
   if (!recipe) {
@@ -66,14 +65,13 @@ export const getRecipe = (id) => {
   return false;
 };
 
-export const searchRecipeByTitle = async function(query){
+export const searchRecipeByTitle = async function (query) {
   // TODO: Implement search algorithm
   return state.recipes;
-   
-}
+};
 
 const createRecipeObject = function (recipe) {
-  const recipeData = {...recipe};
+  const recipeData = { ...recipe };
   // console.log(recipeData);
   return new Recipe(recipeData);
 };
@@ -83,9 +81,9 @@ export const loadRecipe = async function (id) {
     const recipe = getRecipe(id);
     state.recipe = recipe;
 
-    // if (state.bookmarks.some(bookmark => bookmark.id === id))
-    //   state.recipe.bookmarked = true;
-    // else state.recipe.bookmarked = false;
+    if (state.bookmarks.some((bookmark) => bookmark.id === id))
+      state.recipe.bookmarked = true;
+    else state.recipe.bookmarked = false;
   } catch (err) {
     throw err;
   }
@@ -125,7 +123,7 @@ export const uploadRecipe = async function (newRecipe) {
     // update recipe states
     state.recipe = recipe;
 
-    const savedRecipe = recipe.save()
+    const savedRecipe = recipe.save();
 
     await wait(SPINNER_WAIT_SEC);
 

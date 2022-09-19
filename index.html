@@ -124,28 +124,50 @@
               <i class="bi bi-search"></i>
             </button>
           </form>
-          <div class="d-flex user-states">
-            <a
-              class="btn btn-cct-russet me-2 user-states--create-recipe-btn text-uppercase"
-              data-bs-toggle="modal"
-              href="#addRecipeModalToggle"
-              role="button"
-            >
-              Create Recipe
-            </a>
-            <button
-              class="btn btn-cct-russet me-2 user-states--favorite-btn text-uppercase"
-              type="button"
-            >
-              Favorite
-            </button>
-            <a
-              class="btn btn-cct-russet me-2 user-states--profile-status-btn text-uppercase"
-              data-bs-toggle="modal"
-              href="#loginModalToggle"
-              role="button"
-              >Login
-            </a>
+          <div class="bookmarks d-flex">
+            <div class="bookmarks dropdown">
+              <button
+                class="btn btn-cct-russet dropdown-toggle me-2 user-states--favorite-btn text-uppercase"
+                type="button"
+                id="dropdownMenuBookmarks"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                Favorite
+              </button>
+              <ul
+                class="bookmarks__list dropdown-menu dropdown-menu-end mx-3 px-3"
+                aria-labelledby="dropdownMenuBookmarks"
+                style="min-width: 400px"
+              ></ul>
+            </div>
+
+            <div class="d-flex user-states">
+              <a
+                class="btn btn-cct-russet me-2 user-states--create-recipe-btn text-uppercase"
+                data-bs-toggle="modal"
+                href="#addRecipeModalToggle"
+                role="button"
+              >
+                Create Recipe
+              </a>
+              <button
+                class="btn btn-cct-russet me-2 user-states--favorite-btn text-uppercase"
+                type="button"
+              >
+                Favorite
+              </button>
+              <div class="bookmarks">
+                <ul class="bookmarks__list"></ul>
+              </div>
+              <a
+                class="btn btn-cct-russet me-2 user-states--profile-status-btn text-uppercase"
+                data-bs-toggle="modal"
+                href="#loginModalToggle"
+                role="button"
+                >Login
+              </a>
+            </div>
           </div>
         </div>
       </nav>

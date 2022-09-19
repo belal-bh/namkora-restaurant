@@ -1,14 +1,14 @@
 import * as userModel from "./userModel";
 import * as recipeModel from "./recipeModel";
-import {RES_PER_PAGE} from './../config'
+import { RES_PER_PAGE } from "./../config";
 import {
   usersStorageKey,
   loggedInUserCookieKey,
   recipesStorageKey,
+  userBookmarksKeyLastPart,
 } from "./storageKeys";
 import { getCookie } from "../helpers";
 import addRecipeView from "../views/addRecipeView";
-
 
 export const state = {
   recipe: {},
@@ -16,19 +16,19 @@ export const state = {
   users: [],
   loggedInUser: new userModel.User(),
   search: {
-    query: '',
+    query: "",
     results: [],
     page: 1,
     resultsPerPage: RES_PER_PAGE,
-  }
+  },
+  bookmarks: [],
 };
-
 
 export const loadSearchResults = async function (query) {
   try {
     state.search.query = query;
     const recipes = await recipeModel.searchRecipeByTitle(query);
-    state.search.results = recipes.map(rec => {
+    state.search.results = recipes.map((rec) => {
       return {
         id: rec.id,
         title: rec.title,
@@ -64,6 +64,37 @@ const restoreLoginSession = function (cookieKey) {
   }
 };
 
+export const getUserBookmarksKey = () => {
+  return state.loggedInUser.username + userBookmarksKeyLastPart;
+};
+
+const persistBookmarks = function () {
+  // control bookmarks per user
+  const userBookmarksKey = getUserBookmarksKey();
+  localStorage.setItem(userBookmarksKey, JSON.stringify(state.bookmarks));
+};
+
+export const addBookmark = function (recipe) {
+  // Add bookmark
+  state.bookmarks.push(recipe);
+
+  // mark current recipe as bookmarked
+  if (recipe.id === state.recipe.id) state.recipe.bookmarked = true;
+
+  persistBookmarks();
+};
+
+export const deleteBookmark = function (id) {
+  // Delete bookmark
+  const index = state.bookmarks.findIndex((el) => el.id === id);
+  state.bookmarks.splice(index, 1);
+
+  // mark current recipe as NOT bookmarked
+  if (id === state.recipe.id) state.recipe.bookmarked = false;
+
+  persistBookmarks();
+};
+
 const init = function () {
   const usersStorage = localStorage.getItem(usersStorageKey);
   state.users = userModel.parseUsersFromJSON(usersStorage);
@@ -72,6 +103,18 @@ const init = function () {
   state.recipes = recipeModel.parseRecipesFromJSON(recipesStorage);
 
   restoreLoginSession(loggedInUserCookieKey);
+
+  if (state.loggedInUser.username) {
+    const userBookmarksKey = getUserBookmarksKey();
+    const storage = localStorage.getItem(userBookmarksKey);
+
+    if (storage) state.bookmarks = JSON.parse(storage);
+  }
+
+  // TEST
+  // state.bookmarks = state.recipes;
+
+  console.log("bookmarks", state.bookmarks);
 
   // for clean up storage
   // localStorage.removeItem(usersStorageKey);

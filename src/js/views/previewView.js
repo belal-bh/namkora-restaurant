@@ -11,7 +11,7 @@ class PreviewView extends View {
     const markup = `
       <a
         href="#${this._data.id}"
-        class="list-group-item list-group-item-action rounded-0 py-3  ${
+        class="list-group-item list-group-item-action dropdown-item rounded-0 py-3  ${
           this._data.id === id ? "active" : ""
         }"
         aria-current="true"
