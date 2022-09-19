@@ -2,6 +2,7 @@ import View from "./View.js";
 
 import { getFraction } from "./../helpers";
 import { state } from "../models/model.js";
+import { ADMIN } from "./../models/userTypes";
 
 class RecipeView extends View {
   _parentElement = document.querySelector(".recipe");
@@ -70,25 +71,35 @@ class RecipeView extends View {
           <span class="">servings</span>
 
           <div class="d-inline">
-            <button class="fs-4 btn btn-sm rounded-circle btn--update-servings" data-update-to="${
+            <button class="fs-4 border-0 btn btn-sm rounded-circle btn--update-servings" data-update-to="${
               this._data.servings - 1
-            }">
+            }" ${
+      !(state.loggedInUser.username && state.loggedInUser.userType === ADMIN)
+        ? "disabled"
+        : ""
+    }>
               <i class="bi bi-dash-circle text-cct-dc-orange"></i>
             </button>
-            <button class="fs-4 btn btn-sm rounded-circle btn--update-servings" data-update-to="${
+            <button class="fs-4 border-0 btn btn-sm rounded-circle btn--update-servings" data-update-to="${
               this._data.servings + 1
-            }">
+            }" ${
+      !(state.loggedInUser.username && state.loggedInUser.userType === ADMIN)
+        ? "disabled"
+        : ""
+    }>
               <i class="bi bi-plus-circle text-cct-dc-orange"></i>
             </button>
           </div>
         </div>
 
         <div>
-          <i class="fs-4 bi bi-person text-cct-dc-orange ${
+          <i class="fs-4 border-0 bi bi-person text-cct-dc-orange ${
             this._data.user === state.loggedInUser.username ? "" : "d-none"
           }" ></i>
         </div>
-        <button class="fs-4 btn btn-sm rounded btn--bookmark">
+        <button class="fs-4 border-0 btn btn-sm rounded btn--bookmark" ${
+          !state.loggedInUser.username ? "disabled" : ""
+        }>
           <i class="bi bi-bookmark${
             this._data?.bookmarked ? "-fill" : ""
           } text-cct-dc-orange"></i>
