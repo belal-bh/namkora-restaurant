@@ -68,6 +68,14 @@ export const getUserBookmarksKey = () => {
   return state.loggedInUser.username + userBookmarksKeyLastPart;
 };
 
+export const updateServings = function (newServings) {
+  state.recipe.ingredients.forEach((ing) => {
+    ing.quantity = (ing.quantity * newServings) / state.recipe.servings;
+  });
+
+  state.recipe.servings = newServings;
+};
+
 const persistBookmarks = function () {
   // control bookmarks per user
   const userBookmarksKey = getUserBookmarksKey();
