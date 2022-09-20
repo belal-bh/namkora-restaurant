@@ -7,7 +7,7 @@ class PreviewView extends View {
   _generateMarkup() {
     const id = window.location.hash.slice(1);
 
-    console.log(this._data.id === id, this._data.id, id);
+    // console.log(this._data.id === id, this._data.id, id);
     const markup = `
       <a
         href="#${this._data.id}"

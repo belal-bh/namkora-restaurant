@@ -18,6 +18,8 @@ export default class View {
 
   update(data) {
     this._data = data;
+    this.render(data);
+    /*
     const newMarkup = this._generateMarkup();
 
     const newDOM = document.createRange().createContextualFragment(newMarkup);
@@ -46,6 +48,7 @@ export default class View {
         );
       }
     });
+    */
   }
 
   _clear() {

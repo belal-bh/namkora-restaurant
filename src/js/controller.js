@@ -24,28 +24,33 @@ import paginationView from "./views/paginationView";
 import bookmarksView from "./views/bookmarksView";
 import * as recipeModel from "./models/recipeModel";
 import searchView from "./views/searchView";
+// import updateRecipeView from "./views/updateRecipeView";
 
 const controlRecipes = async function () {
-  try {
-    const id = window.location.hash.slice(1);
+  // try {
+  const id = window.location.hash.slice(1);
 
-    if (!id) return;
-    recipeView.renderSpinner();
+  if (!id) return;
+  recipeView.renderSpinner();
 
-    // 0) update results view to mark selected search result
-    resultsView.update(model.getSearchResultsPage());
+  // 0) update results view to mark selected search result
+  resultsView.update(model.getSearchResultsPage());
 
-    // 1) updating bookmarks view
-    bookmarksView.update(model.state.bookmarks);
+  // 1) updating bookmarks view
+  bookmarksView.update(model.state.bookmarks);
 
-    // 2) Loading recipe
-    await recipeModel.loadRecipe(id);
+  // 2) Loading recipe
+  await recipeModel.loadRecipe(id);
 
-    // 3) Rendering recipe
-    recipeView.render(model.state.recipe);
-  } catch (err) {
-    recipeView.renderError();
-  }
+  // 3) Rendering recipe
+  recipeView.render(model.state.recipe);
+
+  // 4) Render recipe update content
+  recipeView.renderUpdateRecipeModal(model.state.recipe);
+  // } catch (err) {
+  // console.error(err);
+  // recipeView.renderError();
+  // }
 };
 
 const controlSearchResults = async function () {
@@ -97,6 +102,53 @@ const controlAddBookmark = function () {
 
   // 3) Render bookmarks
   bookmarksView.render(model.state.bookmarks);
+};
+
+const controlUpdateRecipe = async function (newRecipe) {
+  try {
+    // show loading spinner
+
+    // upload the new recipe data
+    await recipeModel.updateRecipe(newRecipe);
+
+    // render recipe
+    recipeView.render(model.state.recipe);
+
+    // show success message
+    recipeView.renderUpdateRecipeModalMessage(`Recipe successfully updated!`);
+
+    // wait before close the modal
+    await wait(MODAL_MESSAGE_WAIT_SEC);
+
+    // close the modal
+    recipeView.closeUpdateRecipeModal();
+
+    // rerender form as previous state
+    recipeView.renderUpdateRecipeModal(model.state.recipe);
+
+    // change id in url
+    // window.history.pushState(null, "", `#${model.state.recipe.id}`);
+
+    console.log(model.state.recipe);
+  } catch (err) {
+    if (err instanceof ValidationError) {
+      recipeView.renderUpdateRecipeModalValidationError(err.message);
+
+      console.error("error", err);
+    } else {
+      console.log(` 💥💥💥 ${err}`);
+      recipeView.renderUpdateRecipeModalError(err.message);
+
+      // wait before close the modal
+      await wait(MODAL_MESSAGE_WAIT_SEC);
+
+      // close the modal
+      recipeView.closeUpdateRecipeModal();
+
+      // rerender form as previous state
+      recipeView.renderUpdateRecipeModal(model.state.recipe);
+    }
+  }
 };
 
 const controlBookmarks = function () {
@@ -304,6 +356,7 @@ const init = () => {
   paginationView.addHandlerClick(controlPagination);
   bookmarksView.addHandlerRender(controlBookmarks);
   recipeView.addHandlerAddBookmark(controlAddBookmark);
+  recipeView.addHandlerUpdateRecipe(controlUpdateRecipe);
 };
 
 init();
