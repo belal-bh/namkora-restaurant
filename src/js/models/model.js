@@ -84,6 +84,18 @@ export const updateServings = function (newServings) {
   state.recipe.servings = newServings;
 };
 
+export const refetchUserBookmarks = function () {
+  if (state.loggedInUser.username) {
+    const userBookmarksKey = getUserBookmarksKey();
+    const storage = localStorage.getItem(userBookmarksKey);
+
+    if (storage) state.bookmarks = JSON.parse(storage);
+    else state.bookmarks = [];
+  } else {
+    state.bookmarks = [];
+  }
+};
+
 const persistBookmarks = function () {
   // control bookmarks per user
   const userBookmarksKey = getUserBookmarksKey();

@@ -183,6 +183,9 @@ export const loginUser = async function (newUser) {
     model.state.loggedInUser = user;
     setCookie(loggedInUserCookieKey, user.username);
 
+    // Refresh user bookmarks
+    model.refetchUserBookmarks();
+
     await wait(SPINNER_WAIT_SEC);
 
     return user;
@@ -197,6 +200,9 @@ export const logoutUser = async function () {
 
     model.state.loggedInUser = new User();
     deleteCookie(loggedInUserCookieKey);
+
+    // Refresh user bookmarks
+    model.refetchUserBookmarks();
 
     await wait(SPINNER_WAIT_SEC);
 

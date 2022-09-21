@@ -27,36 +27,36 @@ import searchView from "./views/searchView";
 // import updateRecipeView from "./views/updateRecipeView";
 
 const controlRecipes = async function () {
-  // try {
-  const id = window.location.hash.slice(1);
+  try {
+    const id = window.location.hash.slice(1);
 
-  if (!id) return;
-  else {
-    if (!recipeModel.isValidRecipeId(id)) {
-      recipeView.renderMessage(`No recipe found! Invalid recipe id.`);
-      return;
+    if (!id) return;
+    else {
+      if (!recipeModel.isValidRecipeId(id)) {
+        recipeView.renderMessage(`No recipe found! Invalid recipe id.`);
+        return;
+      }
     }
+    recipeView.renderSpinner();
+
+    // 0) update results view to mark selected search result
+    resultsView.update(model.getSearchResultsPage());
+
+    // 1) updating bookmarks view
+    bookmarksView.update(model.state.bookmarks);
+
+    // 2) Loading recipe
+    await recipeModel.loadRecipe(id);
+
+    // 3) Rendering recipe
+    recipeView.render(model.state.recipe);
+
+    // 4) Render recipe update content
+    recipeView.renderUpdateRecipeModal(model.state.recipe);
+  } catch (err) {
+    console.error(err);
+    recipeView.renderError();
   }
-  recipeView.renderSpinner();
-
-  // 0) update results view to mark selected search result
-  resultsView.update(model.getSearchResultsPage());
-
-  // 1) updating bookmarks view
-  bookmarksView.update(model.state.bookmarks);
-
-  // 2) Loading recipe
-  await recipeModel.loadRecipe(id);
-
-  // 3) Rendering recipe
-  recipeView.render(model.state.recipe);
-
-  // 4) Render recipe update content
-  recipeView.renderUpdateRecipeModal(model.state.recipe);
-  // } catch (err) {
-  // console.error(err);
-  // recipeView.renderError();
-  // }
 };
 
 const controlSearchResults = async function () {
@@ -233,6 +233,15 @@ const controlLoginUser = async function (newUser) {
     // update user state stutus
     userStateView.render(model.state.loggedInUser);
 
+    // re-render if recipe already renderd
+    const id = window.location.hash.slice(1);
+    if (id && recipeModel.isValidRecipeId(id)) {
+      recipeView.render(model.state.recipe);
+    }
+
+    // re-render bookmark view
+    bookmarksView.render();
+
     // wait before close the modal
     await wait(MODAL_MESSAGE_WAIT_SEC);
 
@@ -282,6 +291,15 @@ const controlLogoutUser = async function () {
 
     // update user state stutus
     userStateView.render();
+
+    // re-render if recipe already renderd
+    const id = window.location.hash.slice(1);
+    if (id && recipeModel.isValidRecipeId(id)) {
+      recipeView.render(model.state.recipe);
+    }
+
+    // re-render bookmark view
+    bookmarksView.render();
 
     // wait before close the modal
     await wait(MODAL_MESSAGE_WAIT_SEC);
