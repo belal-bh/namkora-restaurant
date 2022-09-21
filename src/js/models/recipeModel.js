@@ -134,6 +134,46 @@ export const uploadRecipe = async function (newRecipe) {
   }
 };
 
+export const updateRecipe = async function (newRecipe) {
+  try {
+    console.log(newRecipe);
+    const ingredientListInitial = [];
+    const ingredients = newRecipe.ingredients.reduce((ingredientList, ing) => {
+      if (ing?.quantity && ing?.description)
+        ingredientList.push({
+          quantity: +ing.quantity,
+          unit: ing.unit,
+          description: ing.description,
+        });
+      return ingredientList;
+    }, ingredientListInitial);
+    const recipe = getRecipe(newRecipe?.id ? newRecipe.id : state.recipe.id);
+
+    // Update recipe data
+    recipe.title = newRecipe.title;
+    recipe.sourceUrl = newRecipe.sourceUrl;
+    recipe.image = newRecipe.image;
+    recipe.publisher = newRecipe.publisher;
+    recipe.cookingTime = +newRecipe.cookingTime;
+    recipe.servings = +newRecipe.servings;
+    recipe.ingredients = ingredients;
+
+    // console.log("recipe", recipe);
+
+    // update recipe states
+    state.recipe = recipe;
+
+    const savedRecipe = recipe.save();
+
+    await wait(SPINNER_WAIT_SEC);
+
+    persistRecipes();
+  } catch (err) {
+    console.error(err);
+    throw err;
+  }
+};
+
 const persistRecipes = () => {
   localStorage.setItem(recipesStorageKey, JSON.stringify(state.recipes));
 };
