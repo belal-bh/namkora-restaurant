@@ -107,6 +107,7 @@ const controlAddBookmark = function () {
 const controlUpdateRecipe = async function (newRecipe) {
   try {
     // show loading spinner
+    recipeView.renderUpdateRecipeModalSpinner()
 
     // upload the new recipe data
     await recipeModel.updateRecipe(newRecipe);
@@ -132,6 +133,10 @@ const controlUpdateRecipe = async function (newRecipe) {
     console.log(model.state.recipe);
   } catch (err) {
     if (err instanceof ValidationError) {
+      // render spinner
+      recipeView.renderUpdateRecipeModalSpinner();
+      await wait(MODAL_MESSAGE_WAIT_SEC);
+      registerUserView.renderUpdateRecipeModal(newUser);
       recipeView.renderUpdateRecipeModalValidationError(err.message);
 
       console.error("error", err);

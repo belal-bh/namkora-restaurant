@@ -381,11 +381,35 @@ class RecipeView extends View {
     this._addHandlerAddRecipeIngredientBtn();
   }
 
+
+  renderUpdateRecipeModalSpinner(loadingMessage = null){
+    const markup = loadingMessage
+      ? `
+      <div class="d-flex align-items-center">
+        <strong>${loadingMessage}...</strong>
+        <div class="spinner-border ms-auto" role="status" aria-hidden="true"></div>
+      </div>
+      `
+      : `
+      <div class="text-center text-cct-russet">
+        <div class="spinner-border" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </div>
+    `;
+
+    const updateRecipeFormElement = document.querySelector(".update");
+    console.log(updateRecipeFormElement);
+
+    updateRecipeFormElement.innerHTML = markup;
+
+  }
+
   _generateUpdateRecipeModalMarkup() {
     const markup = `
+      <div class="text-center"><h5>Update Recipe!</h5></hr></div>
       <div class="text-danger validation-error-message"></div>
       <div class="update__column">
-        <h3 class="text-cct-russet">Recipe data</h3>
         <div class="mb-3">
           <label for="update-recipe--title" class="form-label"
             >Title</label
@@ -513,7 +537,7 @@ class RecipeView extends View {
         </div>
       </div>
 
-      <h3 class="text-cct-russet">Ingredients</h3>
+      <h5 class="text-cct-russet">Ingredients</h3>
       <div id="add_update_recipe_ingredients" class="update__column">
         
       </div>
