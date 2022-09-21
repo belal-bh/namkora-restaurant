@@ -176,9 +176,6 @@
                 <div class="modal-dialog modal-dialog-centered">
                   <div class="modal-content">
                     <div class="modal-header">
-                      <h5 class="modal-title" id="loginModalToggleLabel">
-                        Login Your Namkora Account!
-                      </h5>
                       <button
                         type="button"
                         class="btn-close"
@@ -188,6 +185,7 @@
                     </div>
                     <div class="modal-body">
                       <form class="login">
+                        <div class="text-center" id="loginModalToggleLabel"><h5>Login with Namkora Account</h5></hr></div>
                         <div class="text-danger validation-error-message"></div>
                         <div class="mb-3">
                           <label for="login--username" class="form-label"
@@ -220,17 +218,23 @@
                         <button type="submit" class="btn btn-cct-russet">
                           Login
                         </button>
+                        <div class="text-center">
+                          </hr></hr>
+                          <p>Do not have a Namkora Account? 
+                            <a
+                              class="text-decoration-none"
+                              data-bs-target="#registrationModalToggle"
+                              data-bs-toggle="modal"
+                              href="#registrationModalToggle"
+                            >
+                              Register Here!
+                            </a>
+                          </p>
+                        </div>
                       </form>
                     </div>
                     <div class="modal-footer">
-                      <p>Do not have a Namkora Account ?</p>
-                      <button
-                        class="btn btn-primary"
-                        data-bs-target="#registrationModalToggle"
-                        data-bs-toggle="modal"
-                      >
-                        Register Here!
-                      </button>
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     </div>
                   </div>
                 </div>

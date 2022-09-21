@@ -201,7 +201,7 @@ const controlRegisterUser = async function (newUser) {
 const controlLoginUser = async function (newUser) {
   try {
     // render spinner TODO
-    // loginUserView.renderSpinner();
+    loginUserView.renderSpinner();
 
     // login user
     const user = await userModel.loginUser(newUser);
@@ -225,6 +225,10 @@ const controlLoginUser = async function (newUser) {
     console.log(model.state.loggedInUser);
   } catch (err) {
     if (err instanceof ValidationError) {
+      // render spinner TODO
+      loginUserView.renderSpinner();
+      await wait(MODAL_MESSAGE_WAIT_SEC);
+      loginUserView.renderWithData(newUser);
       loginUserView.renderValidationError(err.message);
 
       // console.log("error", err);
