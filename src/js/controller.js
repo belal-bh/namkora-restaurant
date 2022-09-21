@@ -157,12 +157,12 @@ const controlBookmarks = function () {
 
 const controlRegisterUser = async function (newUser) {
   try {
-    // render spinner TODO
+    // render spinner
     registerUserView.renderSpinner();
 
     // create new user
     const user = await userModel.createUser(newUser);
-    // console.log("nweUser:", user);
+    console.log("nweUser:", user);
 
     // show success message
     registerUserView.renderMessage();
@@ -174,11 +174,16 @@ const controlRegisterUser = async function (newUser) {
     registerUserView.closeModal();
 
     // rerender form as previous state
-    registerUserView.render(model.state.loggedInUser);
+    registerUserView.render();
 
     console.log(model.state.users);
   } catch (err) {
     if (err instanceof ValidationError) {
+      console.log(newUser)
+      // render spinner
+      registerUserView.renderSpinner();
+      await wait(MODAL_MESSAGE_WAIT_SEC);
+      registerUserView.renderWithData(newUser);
       registerUserView.renderValidationError(err.message);
 
       // console.log("error", err);
@@ -200,7 +205,7 @@ const controlRegisterUser = async function (newUser) {
 
 const controlLoginUser = async function (newUser) {
   try {
-    // render spinner TODO
+    // render spinner
     loginUserView.renderSpinner();
 
     // login user
@@ -225,7 +230,7 @@ const controlLoginUser = async function (newUser) {
     console.log(model.state.loggedInUser);
   } catch (err) {
     if (err instanceof ValidationError) {
-      // render spinner TODO
+      // render spinner
       loginUserView.renderSpinner();
       await wait(MODAL_MESSAGE_WAIT_SEC);
       loginUserView.renderWithData(newUser);
