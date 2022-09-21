@@ -31,10 +31,10 @@ const controlRecipes = async function () {
   const id = window.location.hash.slice(1);
 
   if (!id) return;
-  else{
-    if(!recipeModel.isValidRecipeId(id)){
+  else {
+    if (!recipeModel.isValidRecipeId(id)) {
       recipeView.renderMessage(`No recipe found! Invalid recipe id.`);
-      return
+      return;
     }
   }
   recipeView.renderSpinner();
@@ -61,15 +61,19 @@ const controlRecipes = async function () {
 
 const controlSearchResults = async function () {
   try {
-    resultsView.renderSpinner();
-
     // 1) Get search query
     const query = searchView.getQuery();
     if (!query) return;
-    console.log(query);
+
+    // render spinner
+    resultsView.renderSpinner();
 
     // 2) Load search results
-    await model.loadSearchResults(query);
+    const recipeFound = await model.loadSearchResults(query);
+    if (!recipeFound) {
+      resultsView.renderMessage(`No recipe found! Try with different query!`);
+      return;
+    }
 
     // 3) Render results
     resultsView.render(model.getSearchResultsPage());
@@ -77,7 +81,7 @@ const controlSearchResults = async function () {
     // 4) Render pagination buttons
     paginationView.render(model.state.search);
   } catch (err) {
-    // console.error(`${err} 💥💥💥`);
+    console.error(`${err} 💥💥💥`);
   }
 };
 
@@ -113,7 +117,7 @@ const controlAddBookmark = function () {
 const controlUpdateRecipe = async function (newRecipe) {
   try {
     // show loading spinner
-    recipeView.renderUpdateRecipeModalSpinner()
+    recipeView.renderUpdateRecipeModalSpinner();
 
     // upload the new recipe data
     await recipeModel.updateRecipe(newRecipe);
@@ -190,7 +194,7 @@ const controlRegisterUser = async function (newUser) {
     console.log(model.state.users);
   } catch (err) {
     if (err instanceof ValidationError) {
-      console.log(newUser)
+      console.log(newUser);
       // render spinner
       registerUserView.renderSpinner();
       await wait(MODAL_MESSAGE_WAIT_SEC);

@@ -58,10 +58,10 @@ Recipe.prototype.save = function () {
   return this;
 };
 
-export const isValidRecipeId = function(id){
-  if(this.getRecipe(id)) return true;
+export const isValidRecipeId = function (id) {
+  if (this.getRecipe(id)) return true;
   return false;
-}
+};
 
 export const getRecipe = (id) => {
   for (let i = 0; i < state.recipes.length; i++) {
@@ -71,8 +71,35 @@ export const getRecipe = (id) => {
 };
 
 export const searchRecipeByTitle = async function (query) {
-  // TODO: Implement search algorithm
-  return state.recipes;
+  const keywords = query.split(/[,\s]\s*/).reduce((prev, curr) => {
+    curr = curr.trim();
+    if (curr) {
+      prev.push(curr.toLowerCase());
+    }
+    return prev;
+  }, []);
+  console.log(keywords);
+  res = [];
+  state.recipes.forEach((recipe, index) => {
+    let i = 0;
+    let m;
+    while (i < keywords.length) {
+      // let regex = new RegExp(`(${keywords[i]})`, "i");
+
+      let regex = new RegExp(`\b(${keywords[i]})\b`, "i"); // Gives error
+
+      m = regex.test(recipe.title);
+      console.log("m=", m);
+      if (m) {
+        res.push(recipe);
+        break;
+      }
+      i++;
+    }
+  });
+
+  console.log("res", res);
+  return res;
 };
 
 const createRecipeObject = function (recipe) {

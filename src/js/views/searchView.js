@@ -1,20 +1,22 @@
-import View from './View';
+import View from "./View";
 
 class SearchView extends View {
-  _parentElement = document.querySelector('.search');
+  _parentElement = document.querySelector(".search");
 
   getQuery() {
-    const query = this._parentElement.querySelector('.search_field').value;
+    let query = this._parentElement.querySelector(".search_field").value;
+    query = query.trim();
+    console.log(`query="${query}"`);
     this._clearInput();
     return query;
   }
 
   _clearInput() {
-    this._parentElement.querySelector('.search_field').value = '';
+    this._parentElement.querySelector(".search_field").value = "";
   }
 
   addHandlerSearch(handler) {
-    this._parentElement.addEventListener('submit', function (e) {
+    this._parentElement.addEventListener("submit", function (e) {
       e.preventDefault();
       handler();
     });
