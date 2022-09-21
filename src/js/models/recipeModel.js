@@ -84,9 +84,9 @@ export const searchRecipeByTitle = async function (query) {
     let i = 0;
     let m;
     while (i < keywords.length) {
-      // let regex = new RegExp(`(${keywords[i]})`, "i");
+      let regex = new RegExp(`(${keywords[i]})`, "i"); // do not get expected result
 
-      let regex = new RegExp(`\b(${keywords[i]})\b`, "i"); // Gives error
+      // let regex = new RegExp(`\b(${keywords[i]})\b`, "i"); // do not get expected result but regex expected
 
       m = regex.test(recipe.title);
       console.log("m=", m);
