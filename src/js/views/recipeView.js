@@ -405,6 +405,20 @@ class RecipeView extends View {
 
   }
 
+  renderMessage(message = this._message){
+    const markup = `
+      <div class="message text-align-center m-5 p-2">
+        <div class="d-flex justify-content-center">
+          <i class="bi bi-exclamation-triangle text-cct-russet fs-1"></i>
+        </div>
+        <p class="text-center text-cct-russet">${message}</p>
+      </div>
+    `;
+    this._clear();
+    this._parentElement.insertAdjacentHTML("afterbegin", markup);
+
+  }
+
   _generateUpdateRecipeModalMarkup() {
     const markup = `
       <div class="text-center"><h5>Update Recipe!</h5></hr></div>

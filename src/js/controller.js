@@ -31,6 +31,12 @@ const controlRecipes = async function () {
   const id = window.location.hash.slice(1);
 
   if (!id) return;
+  else{
+    if(!recipeModel.isValidRecipeId(id)){
+      recipeView.renderMessage(`No recipe found! Invalid recipe id.`);
+      return
+    }
+  }
   recipeView.renderSpinner();
 
   // 0) update results view to mark selected search result
