@@ -10,6 +10,21 @@ class LoginUserView extends View {
 
   constructor() {
     super();
+    this._modalElement.addEventListener(
+      "shown.bs.modal",
+      this._handleModalOpen.bind(this)
+    );
+    this._modalElement.addEventListener(
+      "hidden.bs.modal",
+      this._handleModalClose.bind(this)
+    );
+  }
+  _handleModalOpen() {
+    this.render(this._data);
+  }
+  _handleModalClose() {
+    // console.log(this);
+    this.render(this._data);
   }
 
   _getFormValidationContainer() {
@@ -38,6 +53,7 @@ class LoginUserView extends View {
         username: data.username,
         rawPassword: data.rawPassword,
       };
+      console.log(newUserData);
       handler(newUserData);
     });
   }
@@ -52,8 +68,67 @@ class LoginUserView extends View {
     container.innerHTML = markup;
   }
 
+  renderWithData(data) {
+    if (!data || (Array.isArray(data) && data.length === 0))
+      return this.renderError();
+
+    const markup = `
+      <div class="text-center"><h5>Login with Namkora Account</h5></hr></div>
+      <div class="text-danger validation-error-message"></div>
+      <div class="mb-3">
+        <label for="login--username" class="form-label"
+          >Username</label
+        >
+        <input
+          type="text"
+          class="form-control"
+          id="login--username"
+          aria-describedby="login--usernameHelp"
+          required
+          name="username"
+          value="${data.username}"
+        />
+        <div id="login--usernameHelp" class="form-text">
+          Enter your uniqe username.
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="login--rawPassword" class="form-label"
+          >Password</label
+        >
+        <input
+          type="password"
+          class="form-control"
+          id="login--rawPassword"
+          required
+          name="rawPassword"
+        />
+      </div>
+      <button type="submit" class="btn btn-cct-russet">
+        Login
+      </button>
+      <div class="text-center">
+        </hr></hr>
+        <p>Do not have a Namkora Account? 
+          <a
+            class="text-decoration-none"
+            data-bs-target="#registrationModalToggle"
+            data-bs-toggle="modal"
+            href="#registrationModalToggle"
+          >
+            Register Here!
+          </a>
+        </p>
+      </div>
+      `;
+
+    this._clear();
+    this._parentElement.insertAdjacentHTML("afterbegin", markup);
+  }
+
   _generateMarkup() {
     const markup = `
+      <div class="text-center"><h5>Login with Namkora Account</h5></hr></div>
       <div class="text-danger validation-error-message"></div>
       <div class="mb-3">
         <label for="login--username" class="form-label"
@@ -86,6 +161,19 @@ class LoginUserView extends View {
       <button type="submit" class="btn btn-cct-russet">
         Login
       </button>
+      <div class="text-center">
+        </hr></hr>
+        <p>Do not have a Namkora Account? 
+          <a
+            class="text-decoration-none"
+            data-bs-target="#registrationModalToggle"
+            data-bs-toggle="modal"
+            href="#registrationModalToggle"
+          >
+            Register Here!
+          </a>
+        </p>
+      </div>
     `;
     return markup;
   }

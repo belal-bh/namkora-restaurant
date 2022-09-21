@@ -10,6 +10,21 @@ class LogoutUserView extends View {
 
   constructor() {
     super();
+    this._modalElement.addEventListener(
+      "shown.bs.modal",
+      this._handleModalOpen.bind(this)
+    );
+    this._modalElement.addEventListener(
+      "hidden.bs.modal",
+      this._handleModalClose.bind(this)
+    );
+  }
+  _handleModalOpen() {
+    this.render();
+  }
+  _handleModalClose() {
+    // console.log(this);
+    this.render();
   }
 
   _getFormValidationContainer() {
@@ -50,6 +65,7 @@ class LogoutUserView extends View {
 
   _generateMarkup() {
     const markup = `
+      <div class="text-center"><h5>You are about to loged out!</h5></hr></div>
       <div class="text-danger validation-error-message"></div>
       <p class="text-cct-russet">
         <i class="bi bi-exclamation-triangle me-2"></i> Are

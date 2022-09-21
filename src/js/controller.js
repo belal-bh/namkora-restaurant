@@ -31,6 +31,12 @@ const controlRecipes = async function () {
   const id = window.location.hash.slice(1);
 
   if (!id) return;
+  else{
+    if(!recipeModel.isValidRecipeId(id)){
+      recipeView.renderMessage(`No recipe found! Invalid recipe id.`);
+      return
+    }
+  }
   recipeView.renderSpinner();
 
   // 0) update results view to mark selected search result
@@ -107,6 +113,7 @@ const controlAddBookmark = function () {
 const controlUpdateRecipe = async function (newRecipe) {
   try {
     // show loading spinner
+    recipeView.renderUpdateRecipeModalSpinner()
 
     // upload the new recipe data
     await recipeModel.updateRecipe(newRecipe);
@@ -132,6 +139,10 @@ const controlUpdateRecipe = async function (newRecipe) {
     console.log(model.state.recipe);
   } catch (err) {
     if (err instanceof ValidationError) {
+      // render spinner
+      recipeView.renderUpdateRecipeModalSpinner();
+      await wait(MODAL_MESSAGE_WAIT_SEC);
+      registerUserView.renderUpdateRecipeModal(newUser);
       recipeView.renderUpdateRecipeModalValidationError(err.message);
 
       console.error("error", err);
@@ -157,12 +168,12 @@ const controlBookmarks = function () {
 
 const controlRegisterUser = async function (newUser) {
   try {
-    // render spinner TODO
+    // render spinner
     registerUserView.renderSpinner();
 
     // create new user
     const user = await userModel.createUser(newUser);
-    // console.log("nweUser:", user);
+    console.log("nweUser:", user);
 
     // show success message
     registerUserView.renderMessage();
@@ -174,11 +185,16 @@ const controlRegisterUser = async function (newUser) {
     registerUserView.closeModal();
 
     // rerender form as previous state
-    registerUserView.render(model.state.loggedInUser);
+    registerUserView.render();
 
     console.log(model.state.users);
   } catch (err) {
     if (err instanceof ValidationError) {
+      console.log(newUser)
+      // render spinner
+      registerUserView.renderSpinner();
+      await wait(MODAL_MESSAGE_WAIT_SEC);
+      registerUserView.renderWithData(newUser);
       registerUserView.renderValidationError(err.message);
 
       // console.log("error", err);
@@ -200,8 +216,8 @@ const controlRegisterUser = async function (newUser) {
 
 const controlLoginUser = async function (newUser) {
   try {
-    // render spinner TODO
-    // loginUserView.renderSpinner();
+    // render spinner
+    loginUserView.renderSpinner();
 
     // login user
     const user = await userModel.loginUser(newUser);
@@ -225,6 +241,10 @@ const controlLoginUser = async function (newUser) {
     console.log(model.state.loggedInUser);
   } catch (err) {
     if (err instanceof ValidationError) {
+      // render spinner
+      loginUserView.renderSpinner();
+      await wait(MODAL_MESSAGE_WAIT_SEC);
+      loginUserView.renderWithData(newUser);
       loginUserView.renderValidationError(err.message);
 
       // console.log("error", err);
@@ -246,8 +266,8 @@ const controlLoginUser = async function (newUser) {
 
 const controlLogoutUser = async function () {
   try {
-    // render spinner TODO
-    // logoutUserView.renderSpinner();
+    // render spinner
+    logoutUserView.renderSpinner();
 
     // user logout
     await userModel.logoutUser();
@@ -257,7 +277,7 @@ const controlLogoutUser = async function () {
     logoutUserView.renderMessage(`You are successfully logged out!`);
 
     // update user state stutus
-    userStateView.render(model.state.loggedInUser);
+    userStateView.render();
 
     // wait before close the modal
     await wait(MODAL_MESSAGE_WAIT_SEC);
@@ -266,13 +286,16 @@ const controlLogoutUser = async function () {
     logoutUserView.closeModal();
 
     // rerender form as previous state
-    logoutUserView.render(model.state.loggedInUser);
+    logoutUserView.render();
 
     console.log(model.state.loggedInUser);
   } catch (err) {
     if (err instanceof ValidationError) {
+      // render spinner
+      logoutUserView.renderSpinner();
+      await wait(MODAL_MESSAGE_WAIT_SEC);
+      logoutUserView.render();
       logoutUserView.renderValidationError(err.message);
-
       // console.log("error", err);
     } else {
       // console.log(` 💥💥💥 ${err}`);

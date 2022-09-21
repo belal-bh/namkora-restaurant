@@ -58,6 +58,11 @@ Recipe.prototype.save = function () {
   return this;
 };
 
+export const isValidRecipeId = function(id){
+  if(this.getRecipe(id)) return true;
+  return false;
+}
+
 export const getRecipe = (id) => {
   for (let i = 0; i < state.recipes.length; i++) {
     if (state.recipes[i].id === id) return state.recipes[i];
