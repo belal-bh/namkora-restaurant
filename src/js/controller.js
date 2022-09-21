@@ -255,8 +255,8 @@ const controlLoginUser = async function (newUser) {
 
 const controlLogoutUser = async function () {
   try {
-    // render spinner TODO
-    // logoutUserView.renderSpinner();
+    // render spinner
+    logoutUserView.renderSpinner();
 
     // user logout
     await userModel.logoutUser();
@@ -266,7 +266,7 @@ const controlLogoutUser = async function () {
     logoutUserView.renderMessage(`You are successfully logged out!`);
 
     // update user state stutus
-    userStateView.render(model.state.loggedInUser);
+    userStateView.render();
 
     // wait before close the modal
     await wait(MODAL_MESSAGE_WAIT_SEC);
@@ -275,13 +275,16 @@ const controlLogoutUser = async function () {
     logoutUserView.closeModal();
 
     // rerender form as previous state
-    logoutUserView.render(model.state.loggedInUser);
+    logoutUserView.render();
 
     console.log(model.state.loggedInUser);
   } catch (err) {
     if (err instanceof ValidationError) {
+      // render spinner
+      logoutUserView.renderSpinner();
+      await wait(MODAL_MESSAGE_WAIT_SEC);
+      logoutUserView.render();
       logoutUserView.renderValidationError(err.message);
-
       // console.log("error", err);
     } else {
       // console.log(` 💥💥💥 ${err}`);
