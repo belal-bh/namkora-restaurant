@@ -1,13 +1,13 @@
 import * as userModel from "./userModel";
 import * as recipeModel from "./recipeModel";
-import { RES_PER_PAGE } from "./../config";
+import { RES_PER_PAGE, MODAL_MESSAGE_WAIT_SEC } from "./../config";
 import {
   usersStorageKey,
   loggedInUserCookieKey,
   recipesStorageKey,
   userBookmarksKeyLastPart,
 } from "./storageKeys";
-import { getCookie } from "../helpers";
+import { getCookie, wait } from "../helpers";
 import addRecipeView from "../views/addRecipeView";
 
 export const state = {
@@ -28,6 +28,9 @@ export const loadSearchResults = async function (query) {
   try {
     state.search.query = query;
     const recipes = await recipeModel.searchRecipeByTitle(query);
+
+    // console.log("recipes found:", recipes);
+
     state.search.results = recipes.map((rec) => {
       return {
         id: rec.id,
@@ -38,6 +41,11 @@ export const loadSearchResults = async function (query) {
       };
     });
     state.search.page = 1;
+    await wait(MODAL_MESSAGE_WAIT_SEC);
+
+    // return recipe found or not
+    if (state.search.results && state.search.results.length > 0) return true;
+    return false;
   } catch (err) {
     console.error(`${err} 💥💥💥💥`);
     throw err;
