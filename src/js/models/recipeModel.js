@@ -79,7 +79,7 @@ export const searchRecipeByTitle = async function (query) {
     return prev;
   }, []);
   console.log(keywords);
-  res = [];
+  const res = [];
   state.recipes.forEach((recipe, index) => {
     let i = 0;
     let m;
