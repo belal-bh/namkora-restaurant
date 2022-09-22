@@ -59,7 +59,7 @@ Recipe.prototype.save = function () {
 };
 
 export const isValidRecipeId = function (id) {
-  if (this.getRecipe(id)) return true;
+  if (getRecipe(id)) return true;
   return false;
 };
 
