@@ -214,12 +214,26 @@ class RecipeView extends View {
           <div class="d-inline">
             <button class="fs-4 border-0 btn btn-sm rounded-circle btn--update-servings" data-update-to="${
               this._data.servings - 1
-            }" ${!(state.loggedInUser.userType === ADMIN) ? "disabled" : ""}>
+            }" ${
+      !(
+        state.loggedInUser.userType === ADMIN &&
+        this._data.user === state.loggedInUser.username
+      )
+        ? "disabled"
+        : ""
+    }>
               <i class="bi bi-dash-circle text-cct-dc-orange"></i>
             </button>
             <button class="fs-4 border-0 btn btn-sm rounded-circle btn--update-servings" data-update-to="${
               this._data.servings + 1
-            }" ${!(state.loggedInUser.userType === ADMIN) ? "disabled" : ""}>
+            }" ${
+      !(
+        state.loggedInUser.userType === ADMIN &&
+        this._data.user === state.loggedInUser.username
+      )
+        ? "disabled"
+        : ""
+    }>
               <i class="bi bi-plus-circle text-cct-dc-orange"></i>
             </button>
           </div>
@@ -239,7 +253,8 @@ class RecipeView extends View {
           <!-- <i class="bi bi-bookmark-fill text-cct-dc-orange"></i> -->
         </button>
         ${
-          state.loggedInUser.userType === ADMIN
+          state.loggedInUser.userType === ADMIN &&
+          this._data.user === state.loggedInUser.username
             ? `<a
                   id="update_recipe_modal_btn"
                   class="fs-4 border-0 btn btn-sm rounded"
