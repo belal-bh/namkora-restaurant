@@ -165,13 +165,14 @@ const bookmarks = function () {
 const addRecipe = async function (newRecipe) {
   try {
     // show loading spinner
-    // addRecipeView.renderSpinner();
+    addRecipeView.renderSpinner();
 
     // upload the new recipe data
     await recipeModel.uploadRecipe(newRecipe);
 
     // render recipe
-    // recipeView.render(model.state.recipe);
+    window.location.hash = `#${model.state.recipe.id}`;
+    recipeView.render(model.state.recipe);
 
     // show success message
     addRecipeView.renderMessage();
