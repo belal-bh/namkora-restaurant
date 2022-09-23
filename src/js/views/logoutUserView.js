@@ -40,7 +40,7 @@ class LogoutUserView extends View {
 
   closeModal() {
     const modal = this._getModalInstance(this._modalElement);
-    console.log(modal);
+    // console.log(modal);
     modal.hide();
   }
 

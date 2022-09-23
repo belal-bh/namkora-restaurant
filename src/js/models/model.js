@@ -8,7 +8,6 @@ import {
   userBookmarksKeyLastPart,
 } from "./storageKeys";
 import { getCookie, wait } from "../helpers";
-import addRecipeView from "../views/addRecipeView";
 
 export const state = {
   recipe: {},
@@ -64,7 +63,7 @@ export const getSearchResultsPage = function (page = state.search.page) {
 const restoreLoginSession = function (cookieKey) {
   const loggedInUsername = getCookie(cookieKey);
 
-  console.log(loggedInUsername);
+  // console.log(loggedInUsername);
 
   if (loggedInUsername) {
     const user = userModel.getUser(loggedInUsername);
@@ -142,7 +141,7 @@ const init = function () {
   // TEST
   // state.bookmarks = state.recipes;
 
-  console.log("bookmarks", state.bookmarks);
+  // console.log("bookmarks", state.bookmarks);
 
   // for clean up storage
   // localStorage.removeItem(usersStorageKey);

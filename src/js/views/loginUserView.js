@@ -40,7 +40,7 @@ class LoginUserView extends View {
 
   async closeModal() {
     const modal = this._getModalInstance(this._modalElement);
-    console.log(modal);
+    // console.log(modal);
     modal.hide();
   }
 
@@ -53,7 +53,7 @@ class LoginUserView extends View {
         username: data.username,
         rawPassword: data.rawPassword,
       };
-      console.log(newUserData);
+      // console.log(newUserData);
       handler(newUserData);
     });
   }

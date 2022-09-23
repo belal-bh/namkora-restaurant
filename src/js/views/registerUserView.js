@@ -41,7 +41,7 @@ class RegisterUserView extends View {
 
   closeModal() {
     const modal = this._getModalInstance(this._modalElement);
-    console.log(modal);
+    // console.log(modal);
     modal.hide();
   }
 
@@ -68,7 +68,6 @@ class RegisterUserView extends View {
     const container = this._getFormValidationContainer();
     container.innerHTML = markup;
   }
-
 
   renderWithData(data) {
     if (!data || (Array.isArray(data) && data.length === 0))
@@ -117,7 +116,7 @@ class RegisterUserView extends View {
           class="form-check-input"
           id="registration--isAdmin"
           name="isAdmin"
-          ${data?.userType === ADMIN ? 'checked' : ''}
+          ${data?.userType === ADMIN ? "checked" : ""}
         />
         <label
           class="form-check-label"

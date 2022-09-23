@@ -78,7 +78,7 @@ export const searchRecipeByTitle = async function (query) {
     }
     return prev;
   }, []);
-  console.log(keywords);
+  // console.log(keywords);
   const res = [];
   state.recipes.forEach((recipe, index) => {
     let i = 0;
@@ -89,7 +89,7 @@ export const searchRecipeByTitle = async function (query) {
       let regex = new RegExp(`\\b(${keywords[i]})\\b`, "i"); // N.B: Use dubble slash (\\)
 
       m = regex.test(recipe.title);
-      console.log("m=", m);
+      // console.log("m=", m);
       if (m) {
         res.push(recipe);
         break;
@@ -98,7 +98,7 @@ export const searchRecipeByTitle = async function (query) {
     }
   });
 
-  console.log("res", res);
+  // console.log("res", res);
   return res;
 };
 
@@ -123,7 +123,7 @@ export const loadRecipe = async function (id) {
 
 export const uploadRecipe = async function (newRecipe) {
   try {
-    console.log(newRecipe);
+    // console.log(newRecipe);
 
     const ingredients = newRecipe.ingredients.map((ing) => {
       return {
@@ -147,7 +147,7 @@ export const uploadRecipe = async function (newRecipe) {
       ingredients,
     };
 
-    console.log("recipe", recipeData);
+    // console.log("recipe", recipeData);
     const recipe = createRecipeObject(recipeData);
 
     console.log("recipe", recipe);

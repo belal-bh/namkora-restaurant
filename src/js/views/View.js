@@ -4,6 +4,7 @@ export default class View {
   _data;
 
   render(data, render = true) {
+    // Some times data is not required in render method, so skip checking
     // if (!data || (Array.isArray(data) && data.length === 0))
     //   return this.renderError();
 
@@ -19,7 +20,11 @@ export default class View {
   update(data) {
     this._data = data;
     this.render(data);
+
     /*
+    // This algorithm is not efficient
+    // So we will not use this algorithm
+
     const newMarkup = this._generateMarkup();
 
     const newDOM = document.createRange().createContextualFragment(newMarkup);

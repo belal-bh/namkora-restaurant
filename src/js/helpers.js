@@ -3,7 +3,6 @@ import { async } from "regenerator-runtime";
 import "regenerator-runtime/runtime"; // Polyfiling others
 
 export const wait = (seconds) => {
-  // console.log(`Waiting for ${seconds} seconds...`);
   return new Promise((resolve) => setTimeout(resolve, seconds * 1000));
 };
 
@@ -12,7 +11,7 @@ const getGCD = function (a, b) {
 };
 
 export const getFraction = function (num) {
-  if (typeof num !== 'number') {
+  if (typeof num !== "number") {
     num = Number.parseFloat(num);
   }
 
@@ -33,9 +32,9 @@ export const getFraction = function (num) {
   if (wholePart != 0) result.push(wholePart);
   if (numerator != 0)
     result.push(
-      (wholePart === 0 ? numerator : Math.abs(numerator)) + '/' + denominator
+      (wholePart === 0 ? numerator : Math.abs(numerator)) + "/" + denominator
     );
-  return result.length > 0 ? result.join(' ') : 0;
+  return result.length > 0 ? result.join(" ") : 0;
 };
 
 export const getUtcDate = function (date) {

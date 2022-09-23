@@ -138,7 +138,7 @@ class RecipeView extends View {
 
   addHandlerUpdateRecipe(handler) {
     const updateRecipeFormElement = document.querySelector(".update");
-    console.log("addHandlerUpdateRecipe", updateRecipeFormElement);
+    // console.log("addHandlerUpdateRecipe", updateRecipeFormElement);
     updateRecipeFormElement.addEventListener("submit", function (e) {
       e.preventDefault();
       const dataArr = [...new FormData(this)];
@@ -381,8 +381,7 @@ class RecipeView extends View {
     this._addHandlerAddRecipeIngredientBtn();
   }
 
-
-  renderUpdateRecipeModalSpinner(loadingMessage = null){
+  renderUpdateRecipeModalSpinner(loadingMessage = null) {
     const markup = loadingMessage
       ? `
       <div class="d-flex align-items-center">
@@ -399,13 +398,12 @@ class RecipeView extends View {
     `;
 
     const updateRecipeFormElement = document.querySelector(".update");
-    console.log(updateRecipeFormElement);
+    // console.log(updateRecipeFormElement);
 
     updateRecipeFormElement.innerHTML = markup;
-
   }
 
-  renderMessage(message = this._message){
+  renderMessage(message = this._message) {
     const markup = `
       <div class="message text-align-center m-5 p-2">
         <div class="d-flex justify-content-center">
@@ -416,7 +414,6 @@ class RecipeView extends View {
     `;
     this._clear();
     this._parentElement.insertAdjacentHTML("afterbegin", markup);
-
   }
 
   _generateUpdateRecipeModalMarkup() {

@@ -91,7 +91,7 @@ class AddRecipeView extends View {
   }
 
   _getFormValidationContainer() {
-    console.log(this._parentElement, this._formValidationContainerClassName);
+    // console.log(this._parentElement, this._formValidationContainerClassName);
     return this._parentElement.querySelector(
       `.${this._formValidationContainerClassName}`
     );
@@ -104,7 +104,7 @@ class AddRecipeView extends View {
 
   closeModal() {
     const modal = this._getModalInstance(this._modalElement);
-    console.log(modal);
+    // console.log(modal);
     modal.hide();
   }
 
@@ -139,7 +139,7 @@ class AddRecipeView extends View {
         });
       }
 
-      console.log(data);
+      // console.log(data);
       handler(data);
     });
   }
