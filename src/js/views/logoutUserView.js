@@ -1,6 +1,8 @@
 import View from "./View.js";
 import * as bootstrap from "bootstrap";
 
+import logoutUserViewHtml from "bundle-text:../../templates/logoutUserView.html";
+
 class LogoutUserView extends View {
   _parentElement = document.querySelector(".logout");
   _message = "Successfully logged out!";
@@ -64,18 +66,8 @@ class LogoutUserView extends View {
   }
 
   _generateMarkup() {
-    const markup = `
-      <div class="text-center"><h5>You are about to loged out!</h5></hr></div>
-      <div class="text-danger validation-error-message"></div>
-      <p class="text-cct-russet">
-        <i class="bi bi-exclamation-triangle me-2"></i> Are
-        you sure to logout!
-      </p>
-      <button type="submit" class="btn btn-cct-russet">
-        Logout
-      </button>
-    `;
-    return markup;
+    // const markup = ``;
+    return logoutUserViewHtml;
   }
 }
 

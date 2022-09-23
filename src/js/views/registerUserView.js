@@ -2,6 +2,8 @@ import { ADMIN, CUSTOMER, ANONYMOUS } from "../models/userTypes.js";
 import View from "./View.js";
 import * as bootstrap from "bootstrap";
 
+import registerUserViewHtml from "bundle-text:../../templates/registerUserView.html";
+
 class RegisterUserView extends View {
   _parentElement = document.querySelector(".registration");
   _message = "You have been successfully registered!";
@@ -149,76 +151,8 @@ class RegisterUserView extends View {
   }
 
   _generateMarkup() {
-    const markup = `
-      <div class="text-center"><h5>Register Your Namkora Account!</h5></hr></div>
-      <div class="text-danger validation-error-message"></div>
-      <div class="mb-3">
-        <label for="registration--username" class="form-label"
-          >Username</label
-        >
-        <input
-          type="text"
-          class="form-control"
-          id="registration--username"
-          aria-describedby="registration--usernameHelp"
-          required
-          name="username"
-        />
-        <div
-          id="registration--usernameHelp"
-          class="form-text"
-        >
-          Choose an uniqe username.
-        </div>
-      </div>
-      <div class="mb-3">
-        <label
-          for="registration--rawPassword"
-          class="form-label"
-          >Password</label
-        >
-        <input
-          type="password"
-          class="form-control"
-          id="registration--rawPassword"
-          required
-          name="rawPassword"
-        />
-      </div>
-      <div class="mb-3 form-check">
-        <input
-          type="checkbox"
-          class="form-check-input"
-          id="registration--isAdmin"
-          name="isAdmin"
-        />
-        <label
-          class="form-check-label"
-          for="registration--isAdmin"
-          >Request for
-          <span class="text-cct-russet">ADMIN</span>
-          Account.</label
-        >
-      </div>
-      <button type="submit" class="btn btn-cct-russet">
-        Register
-      </button>
-      <div class="text-center">
-        </hr></hr>
-        <p>Already have a Namkora Account ? 
-          <a
-            class="text-decoration-none"
-            data-bs-target="#loginModalToggle"
-            data-bs-toggle="modal"
-            href="#loginModalToggle"
-          >
-            Login Here!
-          </a>
-        </p>
-      </div>
-    `;
-
-    return markup;
+    // const markup = ``;
+    return registerUserViewHtml;
   }
 }
 

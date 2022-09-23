@@ -5,6 +5,8 @@ import { state } from "../models/model.js";
 import { ADMIN } from "./../models/userTypes";
 import * as bootstrap from "bootstrap";
 
+import removeRecipeIngredientMarkupForUpdateViewHtml from "bundle-text:../../templates/removeRecipeIngredientMarkupForUpdateView.html";
+
 class RecipeView extends View {
   _parentElement = document.querySelector(".recipe");
   _errorMessage = "No recipe found. Please try another one!";
@@ -24,47 +26,6 @@ class RecipeView extends View {
   _removeRecipeIngredientBtnClassName = "remove_update_recipe_ingredient_btn";
   _ingredientRowClassName = "row-ingredient";
 
-  _removeRecipeIngredientMarkup = `
-    <div class="col-4 m-0 pe-1">
-      <input
-        type="text"
-        class="form-control"
-        id="update-recipe--ingredientDescription"
-        aria-describedby="update-recipe--ingredientDescriptionHelp"
-        required
-        name="ingredientDescription[]"
-        placeholder="Name"
-      />
-    </div>
-    <div class="col-3 m-0 pe-1">
-      <input
-        type="number"
-        class="form-control"
-        id="update-recipe--ingredientQuantity"
-        aria-describedby="update-recipe--ingredientQuantityHelp"
-        name="ingredientQuantity[]"
-        placeholder="Quantity"
-      />
-    </div>
-    <div class="col-3 m-0 pe-1">
-      <input
-        type="text"
-        class="form-control"
-        id="update-recipe--ingredientUnit"
-        aria-describedby="update-recipe--ingredientUnitHelp"
-        name="ingredientUnit[]"
-        placeholder="Unit"
-      />
-    </div>
-    <div class="col-2 m-0 ps-2">
-      <button
-        class="btn btn-outline-cct-russet remove_update_recipe_ingredient_btn"
-      >
-        <i class="bi bi-x-lg"></i>
-      </button>
-    </div>
-  `;
-
   constructor() {
     super();
   }
@@ -78,7 +39,7 @@ class RecipeView extends View {
     e.preventDefault();
     const newDiv = document.createElement("div");
     newDiv.classList.add("row", "my-2", this._ingredientRowClassName);
-    newDiv.innerHTML = this._removeRecipeIngredientMarkup;
+    newDiv.innerHTML = removeRecipeIngredientMarkupForUpdateViewHtml;
     this._addRecipeIngredientsElement.prepend(newDiv);
     const removeBtnElement = newDiv.querySelector(
       `.${this._removeRecipeIngredientBtnClassName}`

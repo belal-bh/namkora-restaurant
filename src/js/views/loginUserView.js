@@ -1,6 +1,8 @@
 import View from "./View.js";
 import * as bootstrap from "bootstrap";
 
+import loginUserViewHtml from "bundle-text:../../templates/loginUserView.html";
+
 class LoginUserView extends View {
   _parentElement = document.querySelector(".login");
   _message = "Successfully logged in!";
@@ -127,55 +129,8 @@ class LoginUserView extends View {
   }
 
   _generateMarkup() {
-    const markup = `
-      <div class="text-center"><h5>Login with Namkora Account</h5></hr></div>
-      <div class="text-danger validation-error-message"></div>
-      <div class="mb-3">
-        <label for="login--username" class="form-label"
-          >Username</label
-        >
-        <input
-          type="text"
-          class="form-control"
-          id="login--username"
-          aria-describedby="login--usernameHelp"
-          required
-          name="username"
-        />
-        <div id="login--usernameHelp" class="form-text">
-          Enter your uniqe username.
-        </div>
-      </div>
-      <div class="mb-3">
-        <label for="login--rawPassword" class="form-label"
-          >Password</label
-        >
-        <input
-          type="password"
-          class="form-control"
-          id="login--rawPassword"
-          required
-          name="rawPassword"
-        />
-      </div>
-      <button type="submit" class="btn btn-cct-russet">
-        Login
-      </button>
-      <div class="text-center">
-        </hr></hr>
-        <p>Do not have a Namkora Account? 
-          <a
-            class="text-decoration-none"
-            data-bs-target="#registrationModalToggle"
-            data-bs-toggle="modal"
-            href="#registrationModalToggle"
-          >
-            Register Here!
-          </a>
-        </p>
-      </div>
-    `;
-    return markup;
+    // const markup = ``;
+    return loginUserViewHtml;
   }
 }
 
