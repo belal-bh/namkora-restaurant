@@ -1,8 +1,9 @@
 import { v4 as uuidv4 } from "uuid";
-import { state } from "./model";
+import { state, syncBookmarks } from "./model";
 import { recipesStorageKey } from "./storageKeys";
 import { SPINNER_WAIT_SEC } from "./../config";
 import { wait } from "../helpers";
+import { ValidationError } from "./exceptions";
 
 export class Recipe {
   id;
@@ -200,6 +201,40 @@ export const updateRecipe = async function (newRecipe) {
     await wait(SPINNER_WAIT_SEC);
 
     persistRecipes();
+  } catch (err) {
+    console.error(err);
+    throw err;
+  }
+};
+
+export const deleteRecipe = async function (recipeId) {
+  try {
+    // console.log(recipeId);
+
+    const recipe = getRecipe(recipeId);
+    if (!recipe) throw new ValidationError("Recipe does not exist!");
+
+    // remove recipe from state recipes list
+    state.recipes = state.recipes.filter((rec) => rec.id !== recipe.id);
+
+    // remove recipe from state bokmarks list
+    state.bookmarks = state.bookmarks.filter((rec) => rec.id !== recipe.id);
+
+    // remove recipe from state search results list
+    state.search.results = state.search.results.filter(
+      (rec) => rec.id !== recipe.id
+    );
+
+    // remove recipe from state.recipe
+    state.recipe = {};
+
+    await wait(SPINNER_WAIT_SEC);
+
+    // update storage
+    persistRecipes();
+
+    // sync bookmarks with recipes
+    syncBookmarks();
   } catch (err) {
     console.error(err);
     throw err;

@@ -122,6 +122,14 @@ export const deleteBookmark = function (id) {
   persistBookmarks();
 };
 
+export const syncBookmarks = function () {
+  state.bookmarks = state.bookmarks.filter((rec) => {
+    return recipeModel.isValidRecipeId(rec.id);
+  });
+
+  persistBookmarks();
+};
+
 const init = function () {
   const usersStorage = localStorage.getItem(usersStorageKey);
   state.users = userModel.parseUsersFromJSON(usersStorage);
@@ -146,6 +154,9 @@ const init = function () {
   // for clean up storage
   // localStorage.removeItem(usersStorageKey);
   // localStorage.removeItem(recipesStorageKey);
+
+  // sync bookmark list with recipes
+  // syncBookmarks();
 };
 
 init();

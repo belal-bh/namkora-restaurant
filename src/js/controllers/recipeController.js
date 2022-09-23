@@ -7,7 +7,6 @@ import * as bootstrap from "bootstrap";
 
 import * as model from "./../models/model";
 import * as recipeModel from "./../models/recipeModel";
-import registerUserView from "./../views/registerUserView";
 import addRecipeView from "./../views/addRecipeView";
 import resultsView from "./../views/resultsView";
 import { ValidationError } from "./../models/exceptions";
@@ -45,6 +44,9 @@ const recipes = async function () {
 
     // 4) Render recipe update content
     recipeView.renderUpdateRecipeModal(model.state.recipe);
+
+    // 5) Render recipe delete content
+    recipeView.renderDeleteRecipeModal();
   } catch (err) {
     console.error(err);
     recipeView.renderError();
@@ -138,7 +140,7 @@ const updateRecipe = async function (newRecipe) {
       // render spinner
       recipeView.renderUpdateRecipeModalSpinner();
       await wait(MODAL_MESSAGE_WAIT_SEC);
-      registerUserView.renderUpdateRecipeModal(newUser);
+      recipeView.renderUpdateRecipeModal(newUser);
       recipeView.renderUpdateRecipeModalValidationError(err.message);
 
       console.error("error", err);
@@ -154,6 +156,67 @@ const updateRecipe = async function (newRecipe) {
 
       // rerender form as previous state
       recipeView.renderUpdateRecipeModal(model.state.recipe);
+    }
+  }
+};
+
+const deleteRecipe = async function (recipeId) {
+  try {
+    // show loading spinner
+    recipeView.renderDeleteRecipeModalSpinner();
+
+    // delete this recipe
+    await recipeModel.deleteRecipe(recipeId);
+
+    // render recipe
+    recipeView.render(model.state.recipe);
+
+    // show success message
+    recipeView.renderDeleteRecipeModalMessage(`Recipe successfully deleted!`);
+
+    // Render results
+    resultsView.render(model.getSearchResultsPage());
+
+    // Render pagination buttons
+    paginationView.render();
+
+    // 3) Render bookmarks
+    bookmarksView.render(model.state.bookmarks);
+
+    // wait before close the modal
+    await wait(MODAL_MESSAGE_WAIT_SEC);
+
+    // close the modal
+    recipeView.closeDeleteRecipeModal();
+
+    // rerender form as previous state
+    recipeView.renderDeleteRecipeModal();
+
+    // change id in url
+    window.history.pushState(null, "", "");
+
+    console.log(model.state.recipe);
+  } catch (err) {
+    if (err instanceof ValidationError) {
+      // render spinner
+      recipeView.renderDeleteRecipeModalSpinner();
+      await wait(MODAL_MESSAGE_WAIT_SEC);
+      recipeView.renderDeleteRecipeModal(newUser);
+      recipeView.renderDeleteRecipeModalValidationError(err.message);
+
+      console.error("error", err);
+    } else {
+      console.log(` 💥💥💥 ${err}`);
+      recipeView.renderDeleteRecipeModalError(err.message);
+
+      // wait before close the modal
+      await wait(MODAL_MESSAGE_WAIT_SEC);
+
+      // close the modal
+      recipeView.closeDeleteRecipeModal();
+
+      // rerender form as previous state
+      recipeView.renderDeleteRecipeModal(model.state.recipe);
     }
   }
 };
@@ -220,4 +283,5 @@ export const controlRecipe = () => {
   bookmarksView.addHandlerRender(bookmarks);
   recipeView.addHandlerAddBookmark(addBookmark);
   recipeView.addHandlerUpdateRecipe(updateRecipe);
+  recipeView.addHandlerDeleteRecipe(deleteRecipe);
 };

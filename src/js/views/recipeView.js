@@ -1,12 +1,12 @@
 import View from "./View.js";
 
-import { getFraction } from "./../helpers";
+import { getFraction, isEmptyObjectOrNullOrUndefined } from "./../helpers";
 import { state } from "../models/model.js";
 import { ADMIN } from "./../models/userTypes";
 import * as bootstrap from "bootstrap";
 
 import removeRecipeIngredientMarkupForUpdateViewHtml from "bundle-text:../../templates/removeRecipeIngredientMarkupForUpdateView.html";
-
+import deleteRecipeMarkupHtml from "bundle-text:../../templates/deleteRecipeMarkup.html";
 class RecipeView extends View {
   _parentElement = document.querySelector(".recipe");
   _errorMessage = "No recipe found. Please try another one!";
@@ -14,6 +14,10 @@ class RecipeView extends View {
 
   _modalElement = document.getElementById("updateRecipeModalToggle");
   _formValidationContainerClassName = "validation-error-message";
+
+  _deleteRecipeModalElement = document.getElementById(
+    "deleteRecipeModalToggle"
+  );
 
   // _addRecipeIngredientsElement = this._modalElement.querySelector(
   //   "#add_update_recipe_ingredients"
@@ -69,6 +73,12 @@ class RecipeView extends View {
 
   closeUpdateRecipeModal() {
     const modal = this._getModalInstance(this._modalElement);
+    // console.log(modal);
+    modal.hide();
+  }
+
+  closeDeleteRecipeModal() {
+    const modal = this._getModalInstance(this._deleteRecipeModalElement);
     // console.log(modal);
     modal.hide();
   }
@@ -135,6 +145,19 @@ class RecipeView extends View {
     });
   }
 
+  addHandlerDeleteRecipe(handler) {
+    const deleteRecipeFormElement = document.querySelector(".delete");
+
+    deleteRecipeFormElement.addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      // delete the current recipe
+      const recipeId = state.recipe.id;
+
+      handler(recipeId);
+    });
+  }
+
   renderUpdateRecipeModalMessage(message) {
     const markup = `
 			<div class="message">
@@ -146,6 +169,19 @@ class RecipeView extends View {
     `;
     const updateRecipeFormElement = document.querySelector(".update");
     updateRecipeFormElement.innerHTML = markup;
+  }
+
+  renderDeleteRecipeModalMessage(message) {
+    const markup = `
+			<div class="message">
+				<div>
+          <i class="bi bi-emoji-smile text-cct-russet"></i>
+				</div>
+				<p>${message}</p>
+			</div>
+    `;
+    const deleteRecipeFormElement = document.querySelector(".delete");
+    deleteRecipeFormElement.innerHTML = markup;
   }
 
   renderMessage(message = this._message) {
@@ -174,6 +210,19 @@ class RecipeView extends View {
     updateRecipeFormElement.innerHTML = markup;
   }
 
+  renderDeleteRecipeModalValidationError(message) {
+    const markup = `
+			<div class="error">
+				<div class="d-flex justify-content-center">
+          <i class="bi bi-exclamation-triangle text-cct-russet fs-1"></i>
+				</div>
+				<p>${message}</p>
+			</div>
+    `;
+    const deleteRecipeFormElement = document.querySelector(".delete");
+    deleteRecipeFormElement.innerHTML = markup;
+  }
+
   renderUpdateRecipeModalError(message) {
     const markup = `
 			<div class="error">
@@ -185,6 +234,36 @@ class RecipeView extends View {
     `;
     const updateRecipeFormElement = document.querySelector(".update");
     updateRecipeFormElement.innerHTML = markup;
+  }
+
+  renderDeleteRecipeModalError(message) {
+    const markup = `
+			<div class="error">
+				<div class="d-flex justify-content-center">
+          <i class="bi bi-exclamation-triangle text-cct-russet fs-1"></i>
+				</div>
+				<p>${message}</p>
+			</div>
+    `;
+    const deleteRecipeFormElement = document.querySelector(".delete");
+    deleteRecipeFormElement.innerHTML = markup;
+  }
+
+  render(data, render = true) {
+    if (data) this._data = data;
+    if (isEmptyObjectOrNullOrUndefined(this._data)) this._data = state.recipe;
+    if (isEmptyObjectOrNullOrUndefined(this._data)) {
+      // console.log("EmptyObjectOrNullOrUndefined");
+      this.renderMessage("No recipe found! Invalid recipe id.");
+      return;
+    }
+
+    const markup = this._generateMarkup();
+
+    if (!render) return markup;
+
+    this._clear();
+    this._parentElement.insertAdjacentHTML("afterbegin", markup);
   }
 
   _generateMarkup() {
@@ -250,7 +329,6 @@ class RecipeView extends View {
           <i class="bi bi-bookmark${
             this._data?.bookmarked ? "-fill" : ""
           } text-cct-dc-orange"></i>
-          <!-- <i class="bi bi-bookmark-fill text-cct-dc-orange"></i> -->
         </button>
         ${
           state.loggedInUser.userType === ADMIN &&
@@ -263,6 +341,21 @@ class RecipeView extends View {
                   role="button"
                 >
                 <i class="bi bi-pencil-square text-cct-dc-orange"></i>
+                </a>`
+            : ""
+        }
+
+        ${
+          state.loggedInUser.userType === ADMIN &&
+          this._data.user === state.loggedInUser.username
+            ? `<a
+                  id="delete_recipe_modal_btn"
+                  class="fs-4 border-0 btn btn-sm rounded"
+                  data-bs-toggle="modal"
+                  href="#deleteRecipeModalToggle"
+                  role="button"
+                >
+                <i class="bi bi-trash text-cct-dc-orange"></i>
                 </a>`
             : ""
         }
@@ -357,6 +450,12 @@ class RecipeView extends View {
     this._addHandlerAddRecipeIngredientBtn();
   }
 
+  renderDeleteRecipeModal(data = this._data) {
+    const markup = this._generateDeleteRecipeModalMarkup();
+    const deleteRecipeFormElement = document.querySelector(".delete");
+    deleteRecipeFormElement.innerHTML = markup;
+  }
+
   renderUpdateRecipeModalSpinner(loadingMessage = null) {
     const markup = loadingMessage
       ? `
@@ -377,6 +476,27 @@ class RecipeView extends View {
     // console.log(updateRecipeFormElement);
 
     updateRecipeFormElement.innerHTML = markup;
+  }
+
+  renderDeleteRecipeModalSpinner(loadingMessage = null) {
+    const markup = loadingMessage
+      ? `
+      <div class="d-flex align-items-center">
+        <strong>${loadingMessage}...</strong>
+        <div class="spinner-border ms-auto" role="status" aria-hidden="true"></div>
+      </div>
+      `
+      : `
+      <div class="text-center text-cct-russet">
+        <div class="spinner-border" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </div>
+    `;
+
+    const deleteRecipeFormElement = document.querySelector(".delete");
+
+    deleteRecipeFormElement.innerHTML = markup;
   }
 
   renderMessage(message = this._message) {
@@ -630,6 +750,10 @@ class RecipeView extends View {
     }
     // console.log("_generateUpdateRecipeIngedientMarkup", rows);
     return rows;
+  }
+
+  _generateDeleteRecipeModalMarkup() {
+    return deleteRecipeMarkupHtml;
   }
 }
 

@@ -6,6 +6,17 @@ export const wait = (seconds) => {
   return new Promise((resolve) => setTimeout(resolve, seconds * 1000));
 };
 
+export const isEmptyObjectOrNullOrUndefined = (obj) => {
+  // it is not accourate solution for checking empty object
+  // but it will work for my application
+  // SEE details at: https://stackoverflow.com/questions/679915/how-do-i-test-for-an-empty-javascript-object
+
+  // check is it null or undefined
+  if (!obj) return true;
+  // check is it empty object or not
+  return Object.keys(obj).length === 0;
+};
+
 const getGCD = function (a, b) {
   return b == 0 ? a : getGCD(b, a % b);
 };
