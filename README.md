@@ -16,7 +16,12 @@ Without logged in user will be treated as `ANONYMOUS` user.
 
 ## Developer Instractions
 
-First goto root directory of this repository. Then use `terminal/command prompt`.
+- CLone this repository
+- Go to root directory of this repository
+- Then open your `terminal/command prompt`
+- Install packages using `npm install` command
+
+Then...
 
 To run the development server:
 
@@ -24,7 +29,7 @@ To run the development server:
 npm start
 ```
 
-Then you will see similar to `Server running at http://localhost:1234`. Then open your browser and go to this URL (`http://localhost:1234`).
+Then you will see similar to `Server running at http://localhost:1234`. Then open your browser and go to this URL [http://localhost:1234](http://localhost:1234).
 
 To build the applocation:
 
