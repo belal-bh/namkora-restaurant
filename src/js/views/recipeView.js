@@ -522,7 +522,7 @@ class RecipeView extends View {
     return [markup, this._generateUpdateRecipeIngedientMarkup()];
   }
 
-  _makeIngredientRow(ingredient, addBtn = false) {
+  _makeIngredientRow(ingredient, ingKey, addBtn = false) {
     const newDiv = document.createElement("div");
     newDiv.classList.add("row", "my-2", this._ingredientRowClassName);
 
@@ -531,8 +531,6 @@ class RecipeView extends View {
         <input
           type="text"
           class="form-control"
-          id="update-recipe--ingredientDescription"
-          aria-describedby="update-recipe--ingredientDescriptionHelp"
           required
           name="ingredientDescription[]"
           placeholder="Name"
@@ -543,8 +541,6 @@ class RecipeView extends View {
         <input
           type="number"
           class="form-control"
-          id="update-recipe--ingredientQuantity"
-          aria-describedby="update-recipe--ingredientQuantityHelp"
           name="ingredientQuantity[]"
           placeholder="Quantity"
           value="${ingredient?.quantity ? ingredient.quantity : ""}"
@@ -554,8 +550,6 @@ class RecipeView extends View {
         <input
           type="text"
           class="form-control"
-          id="update-recipe--ingredientUnit"
-          aria-describedby="update-recipe--ingredientUnitHelp"
           name="ingredientUnit[]"
           placeholder="Unit"
           value="${ingredient?.unit ? ingredient.unit : ""}"
@@ -602,19 +596,19 @@ class RecipeView extends View {
     try {
       if (this._data.ingredients.length >= 1) {
         // console.log("if1", this._data.ingredients[i]);
-        rows.push(this._makeIngredientRow(this._data.ingredients[i], true));
+        rows.push(this._makeIngredientRow(this._data.ingredients[i], i, true));
         i++;
 
         while (i < this._data.ingredients.length) {
           // console.log("while", this._data.ingredients[i]);
-          rows.push(this._makeIngredientRow(this._data.ingredients[i]));
+          rows.push(this._makeIngredientRow(this._data.ingredients[i], i));
           i++;
         }
       }
 
       if (this._data.ingredients.length === 0) {
         // console.log("I am hitted!", this._data.ingredients.length);
-        rows.push(this._makeIngredientRow(undefined, true));
+        rows.push(this._makeIngredientRow(undefined, i, true));
       }
     } catch (err) {
       console.error(err);
