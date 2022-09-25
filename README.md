@@ -2,7 +2,9 @@
 
 A restaurant web application using vanilla JavaScript.
 
-See Live (development version): [https://namkora-restaurant.netlify.app/](https://namkora-restaurant.netlify.app/)
+See Live: [http://restaurant.namkora.com/](http://restaurant.namkora.com/)
+
+![Namkora special pizza (screenshot)](./namkora-special-pizza-screenshot.png)
 
 ## User Manual
 
@@ -37,8 +39,31 @@ To build the applocation:
 npm run build
 ```
 
+## The Given Requirements
+
+Develop an website for restaurant.
+There will be two types of end user (1. Admin, 2. Customer/anonymous user)
+
+Admin features:
+
+1. Admin will be able to login to the system. (initially keep a hard-coded credential for admin)
+2. Will be able to add/update/remove recepies
+
+Customer features:
+
+1. Customer will be able to view(list) or search any reciepe from the list
+2. Will be able to add any reciepe to his favorite list
+3. Login is optional for (1 & 2)
+4. Will be able to login & registration
+5. Logged in user will be able to see his favorite listed recipes if he logs in after logout. that means, registered users data will be persistent.
+
+Constraints:
+
+1. No api call is allowed. All data should be handled inside browser.
+2. No third party library/framework is allowed except some dev dependency like (scss/tailwind etc.)
+
 ## Note
 
-This application still under development. Be aware about the bugs and unexpected behabiors while using this application. We are trying to complete the application ASAP.
+This application developed only for learning purpose. Be aware about the bugs and unexpected behabiors while using this application. I tried my best to build a simple restaurant application using vanilla JavaScript.
 
 Thank you!
