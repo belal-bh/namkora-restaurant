@@ -2,7 +2,7 @@
 
 A restaurant web application using vanilla JavaScript.
 
-See Live: [http://restaurant.namkora.com/](http://restaurant.namkora.com/)
+See Live: [https://restaurant.namkora.com/](https://restaurant.namkora.com/)
 
 ![Namkora special pizza (screenshot)](./namkora-special-pizza-screenshot.png)
 
